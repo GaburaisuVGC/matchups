@@ -22,6 +22,9 @@ app.use(express.static('build'));
 app.use('/encode', encodeRouter);
 app.use('/decode', decodeRouter);
 app.use('/parse-pokebin', imagesRouter);
+app.use('/', (req, res) => {
+    res.send('Hello World!');
+});
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
