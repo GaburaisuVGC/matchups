@@ -24,6 +24,7 @@ router.get('/', async (req, res) => {
 
     res.json(images);
   } catch (error) {
+    console.log(error)
     res.status(500).send({ error: 'Failed to fetch Pokémon images' });
   }
 });
