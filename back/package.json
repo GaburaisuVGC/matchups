@@ -1,0 +1,24 @@
+{
+  "name": "matchups.net",
+  "version": "1.0.0",
+  "description": "Store and share Matchups and Gameplans for your Pokémon VG tournaments",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.600.0",
+    "aws-sdk": "^2.1649.0",
+    "axios": "^1.7.2",
+    "body-parser": "^1.20.2",
+    "cheerio": "^1.0.0-rc.12",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "pako": "^2.1.0",
+    "puppeteer": "^22.12.1"
+  }
+}
