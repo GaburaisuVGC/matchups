@@ -111,7 +111,7 @@ const JsonViewer = () => {
         <div className="card-body d-flex justify-content-between">
           <h2>
             <a
-              href={`https:pokebin.com/${data.paste}`}
+              href={`https://pokebin.com/${data.paste}`}
               target="_blank"
               rel="noreferrer"
               className="text-primary text-decoration-none"
