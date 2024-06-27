@@ -27,7 +27,7 @@ const App = () => {
   return (
     <div
       className={isDarkMode ? "dark-mode" : "light-mode"}
-      style={{ minHeight: "100vh", fontFamily: "Raleway, sans-serif" }}
+      style={{ minHeight: "100vh", fontFamily: "Raleway, sans-serif", display: "flex", flexDirection: "column"}}
     >
       <Router>
         <div className="d-flex justify-content-end p-3">
@@ -47,6 +47,7 @@ const App = () => {
         className={`text-center py-3 ${
           isDarkMode ? "bg-dark text-white" : "bg-light text-dark"
         }`}
+        style={{ marginTop: "auto" }}
       >
         <p>
           Project by{" "}
