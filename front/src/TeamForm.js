@@ -29,6 +29,7 @@ const TeamForm = ({ data, setData }) => {
       const images = await response.json();
       setPokemonImages(images);
     } catch (error) {
+      console.log(error);
       setError("Failed to fetch Pokémon images");
     }
   };
