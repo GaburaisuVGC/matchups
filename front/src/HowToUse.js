@@ -10,10 +10,6 @@ const HowToUse = () => {
         setIsDarkMode(darkMode);
         document.body.className = darkMode ? "dark-mode" : "light-mode";
       }, []);
-    
-      useEffect(() => {
-        document.body.className = isDarkMode ? "dark-mode" : "light-mode";
-      }, [isDarkMode]);
 
 
   return (
