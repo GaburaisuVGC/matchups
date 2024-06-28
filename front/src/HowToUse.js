@@ -15,20 +15,12 @@ const HowToUse = () => {
   }, [isDarkMode]);
 
   return (
-    <div
-      className={`container mt-5 ${isDarkMode ? "dark-mode" : "light-mode"}`}
-    >
-      <h1
-        className={`text-center mb-4 ${
-          isDarkMode ? "text-dark-mode" : "text-light-mode"
-        }`}
-      >
+    <div className={`container mt-5 ${isDarkMode ? "text-white" : "text-dark"}`}>
+      <h1 className="text-center mb-4">
         How to use{" "}
         <a
           href="/"
-          className={`text-decoration-none ${
-            isDarkMode ? "text-dark-mode" : "text-light-mode"
-          }`}
+          className={`text-decoration-none ${isDarkMode ? "text-white" : "text-dark"}`}
         >
           Matchups.net
         </a>
