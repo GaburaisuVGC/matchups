@@ -11,11 +11,11 @@ body.light-mode {
 }
 
 a.light-mode {
-  color: white;
+  color: black;
 }
 
 a.dark-mode {
-  color: black;
+  color: white;
 }
 
 /* Dark mode styles */
