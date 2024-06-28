@@ -11,6 +11,10 @@ const HowToUse = () => {
         document.body.className = darkMode ? "dark-mode" : "light-mode";
       }, []);
 
+      useEffect(() => {
+        document.body.className = isDarkMode ? "dark-mode" : "light-mode";
+      }, [isDarkMode]);
+
 
   return (
     <div className="container mt-5">
