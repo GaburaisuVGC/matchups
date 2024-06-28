@@ -50,6 +50,7 @@ const JsonViewer = () => {
     };
 
     fetchData();
+    // eslint-disable-next-line
   }, [id]);
 
   const fetchPokemonImages = async (pasteId) => {
