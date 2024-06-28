@@ -95,11 +95,11 @@ Adamant Nature
           <ul>
             <li>
               Add a matchup with a title and potentially a paste for easy access
-              within the same document.
+              within the same document. You can also add multiple matchups.
             </li>
             <li>Complete Gameplan 1 with text and a composition.</li>
             <li>You can add alternative gameplans.</li>
-            <li>You can add additional matchups.</li>
+            <li>In each gameplan, you can add Pokémon Showdown Replays.</li>
           </ul>
         </li>
         <li className="list-group-item">
