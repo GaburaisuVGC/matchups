@@ -103,7 +103,7 @@ const FormPage = () => {
 
   return (
     <div
-      className={`container mt-3 ${isDarkMode ? "dark-mode" : "light-mode"}`}
+      className={`container ${isDarkMode ? "dark-mode" : "light-mode"}`}
     >
       <h1 className="text-center mb-4">Matchups.net</h1>
       <div
