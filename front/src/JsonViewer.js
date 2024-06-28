@@ -81,7 +81,7 @@ const JsonViewer = () => {
       <div
         className={`container mt-5 ${isDarkMode ? "dark-mode" : "light-mode"}`}
       >
-        <h1 className="text-center mb-4"><a href="/" className={`text-decoration-none ${isDarkMode ? "dark-mode" : "light-mode"}`}>Matchups.net</a> - View Data</h1>
+        <h1 className="text-center mb-4">Matchups.net - View Data</h1>
         <p>Error: {error}</p>
       </div>
     );
@@ -92,7 +92,7 @@ const JsonViewer = () => {
       <div
         className={`container mt-5 ${isDarkMode ? "dark-mode" : "light-mode"}`}
       >
-        <h1 className="text-center mb-4"><a href="/" className={`text-decoration-none ${isDarkMode ? "dark-mode" : "light-mode"}`}>Matchups.net</a> - View Data</h1>
+        <h1 className="text-center mb-4">Matchups.net - View Data</h1>
         <p>Loading...</p>
       </div>
     );
