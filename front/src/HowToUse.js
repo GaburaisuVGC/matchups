@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const HowToUse = () => {
+
+    const [isDarkMode, setIsDarkMode] = useState(false);
+
+    useEffect(() => {
+        const darkMode = localStorage.getItem("darkMode") === "true";
+        setIsDarkMode(darkMode);
+        document.body.className = darkMode ? "dark-mode" : "light-mode";
+      }, []);
+    
+      useEffect(() => {
+        document.body.className = isDarkMode ? "dark-mode" : "light-mode";
+      }, [isDarkMode]);
+
+
   return (
     <div className="container mt-5">
-      <h1 className="text-center mb-4">How to use <a href="/" className="text-decoration-none">Matchups.net</a></h1>
+      <h1 className="text-center mb-4">How to use <a href="/" className={`text-decoration-none ${isDarkMode ? "dark-mode" : "light-mode"}`}>Matchups.net</a></h1>
       <ol className="list-group list-group-numbered">
         <li className="list-group-item">
           <h2>Starting with Your Document</h2>
