@@ -295,7 +295,7 @@ const JsonViewer = () => {
                               </div>
                             ))}
                           </div>
-                          {gameplan.replay && gameplan.replays.length > 0 && (
+                          {gameplan.replays.length > 0 && (
                             <>
                         <h4>Replays</h4>
                             <div className="mb-2">
