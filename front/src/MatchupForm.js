@@ -9,6 +9,7 @@ const MatchupForm = ({ data, setData }) => {
   const [matchupPaste, setMatchupPaste] = useState("");
   const [expandedMatchup, setExpandedMatchup] = useState(null);
   const [expandedGameplan, setExpandedGameplan] = useState({});
+  const [bulkReplays, setBulkReplays] = useState({});
 
   const initialComposition = [
     { pokemon: "", role: "Lead" },
@@ -28,7 +29,7 @@ const MatchupForm = ({ data, setData }) => {
         setExpandedGameplan((prev) => ({ ...prev, [index]: 0 }));
       }
     });
-// eslint-disable-next-line
+    // eslint-disable-next-line
   }, [data.matchups]);
 
   const addMatchup = () => {
@@ -44,6 +45,7 @@ const MatchupForm = ({ data, setData }) => {
         {
           text: "",
           composition: initialComposition,
+          replays: [],
         },
       ],
     };
@@ -61,6 +63,7 @@ const MatchupForm = ({ data, setData }) => {
     const newGameplan = {
       text: "",
       composition: initialComposition,
+      replays: [],
     };
 
     updatedMatchups[index].gameplans.push(newGameplan);
@@ -88,6 +91,25 @@ const MatchupForm = ({ data, setData }) => {
       compIndex
     ][field] = value;
     setData({ ...data, matchups: updatedMatchups });
+  };
+
+  const handleReplaysChange = (matchupIndex, gameplanIndex, value) => {
+    const updatedMatchups = [...data.matchups];
+    if (!updatedMatchups[matchupIndex].gameplans[gameplanIndex].replays) {
+      updatedMatchups[matchupIndex].gameplans[gameplanIndex].replays = [];
+    }
+    updatedMatchups[matchupIndex].gameplans[gameplanIndex].replays = value
+      .split(/[\s,]+/)
+      .map((link) => link.trim())
+      .filter((link) => link !== "");
+    setData({ ...data, matchups: updatedMatchups });
+  };
+
+  const handleBulkReplaysChange = (matchupIndex, gameplanIndex, value) => {
+    setBulkReplays((prev) => ({
+      ...prev,
+      [`${matchupIndex}-${gameplanIndex}`]: value,
+    }));
   };
 
   const removeGameplan = (matchupIndex, gameplanIndex) => {
@@ -266,11 +288,57 @@ const MatchupForm = ({ data, setData }) => {
                             </select>
                           </div>
                         ))}
+                        <h4>Replays</h4>
+                        {gameplan.replays && gameplan.replays.length > 0 && (
+                          <div className="mb-2">
+                            {gameplan.replays.map((replay, index) => (
+                              <a
+                                key={index}
+                                href={replay}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="d-block mb-1"
+                              >
+                                Replay {index + 1}
+                              </a>
+                            ))}
+                          </div>
+                        )}
+                        <textarea
+                          className="form-control"
+                          rows="3"
+                          value={
+                            bulkReplays[`${matchupIndex}-${gameplanIndex}`] ||
+                            gameplan.replays?.join(" ")
+                          }
+                          onChange={(e) =>
+                            handleBulkReplaysChange(
+                              matchupIndex,
+                              gameplanIndex,
+                              e.target.value
+                            )
+                          }
+                          placeholder="Enter replays in bulk (space, comma, or line-separated)"
+                        ></textarea>
+                        <button
+                          className="btn btn-secondary mt-2"
+                          onClick={() =>
+                            handleReplaysChange(
+                              matchupIndex,
+                              gameplanIndex,
+                              bulkReplays[`${matchupIndex}-${gameplanIndex}`] ||
+                                ""
+                            )
+                          }
+                        >
+                          Save Replays
+                        </button>
                         <button
                           onClick={() =>
                             removeGameplan(matchupIndex, gameplanIndex)
                           }
                           className="btn btn-danger mt-2"
+                          style={{ marginLeft: "5px" }}
                         >
                           Remove Gameplan
                         </button>

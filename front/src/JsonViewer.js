@@ -50,7 +50,6 @@ const JsonViewer = () => {
     };
 
     fetchData();
-// eslint-disable-next-line
   }, [id]);
 
   const fetchPokemonImages = async (pasteId) => {
@@ -295,6 +294,24 @@ const JsonViewer = () => {
                               </div>
                             ))}
                           </div>
+                          {gameplan.replay && gameplan.replays.length > 0 && (
+                            <>
+                        <h4>Replays</h4>
+                            <div className="mb-2">
+                              {gameplan.replays.map((replay, index) => (
+                                <a
+                                  key={index}
+                                  href={replay}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="d-block mb-1 text-primary text-decoration-none"
+                                >
+                                  Replay {index + 1}
+                                </a>
+                              ))}
+                            </div>
+                            </>
+                          )}
                         </>
                       )}
                     </div>
