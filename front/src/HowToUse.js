@@ -17,7 +17,7 @@ const HowToUse = () => {
 
 
   return (
-    <div className="container mt-5">
+    <div className={`container mt-5 ${isDarkMode ? "dark-mode" : "light-mode"}`}>
       <h1 className="text-center mb-4">How to use <a href="/" className={`text-decoration-none ${isDarkMode ? "dark-mode" : "light-mode"}`}>Matchups.net</a></h1>
       <ol className="list-group list-group-numbered">
         <li className="list-group-item">
