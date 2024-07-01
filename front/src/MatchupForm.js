@@ -112,6 +112,18 @@ const MatchupForm = ({ data, setData }) => {
     }));
   };
 
+  const handleMatchupTitleChange = (index, value) => {
+    const updatedMatchups = [...data.matchups];
+    updatedMatchups[index].title = value;
+    setData({ ...data, matchups: updatedMatchups });
+  };
+
+  const handleMatchupPasteChange = (index, value) => {
+    const updatedMatchups = [...data.matchups];
+    updatedMatchups[index].paste = value;
+    setData({ ...data, matchups: updatedMatchups });
+  };
+
   const removeGameplan = (matchupIndex, gameplanIndex) => {
     const updatedMatchups = [...data.matchups];
     updatedMatchups[matchupIndex].gameplans.splice(gameplanIndex, 1);
@@ -166,7 +178,15 @@ const MatchupForm = ({ data, setData }) => {
         {data.matchups.map((matchup, matchupIndex) => (
           <div key={matchupIndex} className="mb-3 card p-3">
             <h3 className="d-flex justify-content-between align-items-center">
-              {matchup.title}
+              <input
+                type="text"
+                value={matchup.title}
+                onChange={(e) =>
+                  handleMatchupTitleChange(matchupIndex, e.target.value)
+                }
+                className="form-control"
+                placeholder="Enter matchup title"
+              />
               <button
                 className="btn btn-link"
                 onClick={() =>
@@ -184,6 +204,17 @@ const MatchupForm = ({ data, setData }) => {
             </h3>
             {expandedMatchup === matchupIndex && (
               <>
+                <div className="form-group mt-2">
+                  <input
+                    type="text"
+                    value={matchup.paste}
+                    onChange={(e) =>
+                      handleMatchupPasteChange(matchupIndex, e.target.value)
+                    }
+                    className="form-control"
+                    placeholder="Enter paste link (optional)"
+                  />
+                </div>
                 {matchup.paste && (
                   <h4>
                     Paste:{" "}

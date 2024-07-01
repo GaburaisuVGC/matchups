@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
 const HowToUse = () => {
+  const [showExample, setShowExample] = useState(false);
+
   return (
     <div className="container mt-5">
       <h1 className="text-center mb-4">How to use Matchups.net</h1>
@@ -11,8 +13,15 @@ const HowToUse = () => {
             To begin, take a Showdown export to add a team. The export usually
             looks like this:
           </p>
-          <pre className="bg-light p-3 rounded">
-            {`Urshifu-Rapid-Strike @ Choice Scarf
+          <button
+            className="btn btn-link"
+            onClick={() => setShowExample(!showExample)}
+          >
+            {showExample ? "Hide Example" : "Show Example"}
+          </button>
+          {showExample && (
+            <pre className="bg-light p-3 rounded">
+              {`Urshifu-Rapid-Strike @ Choice Scarf
 Ability: Unseen Fist
 Tera Type: Steel
 EVs: 100 HP / 156 Atk / 4 Def / 76 SpD / 172 Spe
@@ -76,7 +85,8 @@ Adamant Nature
 - Grassy Glide
 - U-turn
 - Fake Out`}
-          </pre>
+            </pre>
+          )}
           <p>
             OR, if you already have one, import a JSON via "Load Draft" to
             continue working on an existing document.
@@ -118,8 +128,8 @@ Adamant Nature
               document.
             </li>
             <li>
-              You can share it or download the corresponding JSON document
-              (allowing you to modify it as you wish before re-uploading it).
+              You can share it, edit the document, or download the corresponding JSON document
+              (also allowing you to modify it as you wish before re-uploading it).
             </li>
           </ul>
         </li>

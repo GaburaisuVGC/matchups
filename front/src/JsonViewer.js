@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "./App.css";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
@@ -7,6 +7,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 
 const JsonViewer = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -76,12 +77,19 @@ const JsonViewer = () => {
     URL.revokeObjectURL(url);
   };
 
+  const handleQuickEdit = () => {
+    localStorage.setItem("matchupData", JSON.stringify(data));
+    navigate("/");
+  };
+
+  const pageTitle = data && data.generalTitle ? data.generalTitle : "Matchups.net - View Data";
+
   if (error) {
     return (
       <div
         className={`container mt-5 ${isDarkMode ? "dark-mode" : "light-mode"}`}
       >
-        <h1 className="text-center mb-4">Matchups.net - View Data</h1>
+        <h1 className="text-center mb-4">{pageTitle}</h1>
         <p>Error: {error}</p>
       </div>
     );
@@ -92,7 +100,7 @@ const JsonViewer = () => {
       <div
         className={`container mt-5 ${isDarkMode ? "dark-mode" : "light-mode"}`}
       >
-        <h1 className="text-center mb-4">Matchups.net - View Data</h1>
+        <h1 className="text-center mb-4">{pageTitle}</h1>
         <p>Loading...</p>
       </div>
     );
@@ -102,7 +110,7 @@ const JsonViewer = () => {
     <div
       className={`container mt-5 ${isDarkMode ? "dark-mode" : "light-mode"}`}
     >
-      <h1 className="text-center mb-4">Matchups.net - View Data</h1>
+      <h1 className="text-center mb-4">{pageTitle}</h1>
       <div
         className={`card mb-4 ${
           isDarkMode ? "card-dark-mode" : "card-light-mode"
@@ -120,9 +128,14 @@ const JsonViewer = () => {
               View Paste
             </a>
           </h2>
-          <button onClick={downloadJSON} className="btn btn-secondary">
-            Download JSON
-          </button>
+          <div>
+            <button onClick={handleQuickEdit} className="btn btn-secondary me-2">
+              Quick Edit
+            </button>
+            <button onClick={downloadJSON} className="btn btn-secondary">
+              Download JSON
+            </button>
+          </div>
         </div>
         {pokemonImages.length > 0 && (
           <div className="d-flex flex-wrap mt-4">
@@ -297,20 +310,20 @@ const JsonViewer = () => {
                           </div>
                           {gameplan.replays && gameplan.replays.length > 0 && (
                             <>
-                        <h4>Replays</h4>
-                            <div className="mb-2">
-                              {gameplan.replays.map((replay, index) => (
-                                <a
-                                  key={index}
-                                  href={replay}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="d-block mb-1 text-primary text-decoration-none"
-                                >
-                                  Replay {index + 1}
-                                </a>
-                              ))}
-                            </div>
+                              <h4>Replays</h4>
+                              <div className="mb-2">
+                                {gameplan.replays.map((replay, index) => (
+                                  <a
+                                    key={index}
+                                    href={replay}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="d-block mb-1 text-primary text-decoration-none"
+                                  >
+                                    Replay {index + 1}
+                                  </a>
+                                ))}
+                              </div>
                             </>
                           )}
                         </>

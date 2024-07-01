@@ -6,7 +6,7 @@ import CalcForm from "./CalcForm";
 import "./App.css";
 
 const FormPage = () => {
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState({ ...initialData, generalTitle: "" });
   const [teamSubmitted, setTeamSubmitted] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const FRONT_URL = process.env.REACT_APP_FRONT_URL;
@@ -20,6 +20,15 @@ const FormPage = () => {
   useEffect(() => {
     document.body.className = isDarkMode ? "dark-mode" : "light-mode";
   }, [isDarkMode]);
+
+  useEffect(() => {
+    const savedData = localStorage.getItem("matchupData");
+    if (savedData) {
+      setData(JSON.parse(savedData));
+      setTeamSubmitted(true);
+      localStorage.removeItem("matchupData");
+    }
+  }, []);
 
   const handleSave = async () => {
     const response = await fetch(`${BACK_URL}/encode`, {
@@ -58,7 +67,7 @@ const FormPage = () => {
           const jsonData = JSON.parse(e.target.result);
           if (isValidJSON(jsonData)) {
             setData(jsonData);
-            setTeamSubmitted(true); // Marquer que l'équipe a été soumise
+            setTeamSubmitted(true);
           } else {
             alert("Invalid JSON structure");
           }
@@ -100,16 +109,18 @@ const FormPage = () => {
     }
     return false;
   };
+  
+
+  const handleTitleChange = (event) => {
+    const newTitle = event.target.value;
+    setData((prevData) => ({ ...prevData, generalTitle: newTitle }));
+  };
 
   return (
-    <div
-      className={`container ${isDarkMode ? "dark-mode" : "light-mode"}`}
-    >
+    <div className={`container ${isDarkMode ? "dark-mode" : "light-mode"}`}>
       <h1 className="text-center mb-4">Matchups.net</h1>
       <div
-        className={`card mb-4 ${
-          isDarkMode ? "card-dark-mode" : "card-light-mode"
-        }`}
+        className={`card mb-4 ${isDarkMode ? "card-dark-mode" : "card-light-mode"}`}
       >
         <div className="card-body">
           <TeamForm
@@ -124,18 +135,14 @@ const FormPage = () => {
       {teamSubmitted && (
         <>
           <div
-            className={`card mb-4 ${
-              isDarkMode ? "card-dark-mode" : "card-light-mode"
-            }`}
+            className={`card mb-4 ${isDarkMode ? "card-dark-mode" : "card-light-mode"}`}
           >
             <div className="card-body">
               <CalcForm data={data} setData={setData} />
             </div>
           </div>
           <div
-            className={`card mb-4 ${
-              isDarkMode ? "card-dark-mode" : "card-light-mode"
-            }`}
+            className={`card mb-4 ${isDarkMode ? "card-dark-mode" : "card-light-mode"}`}
           >
             <div className="card-body">
               <MatchupForm data={data} setData={setData} />
@@ -143,7 +150,16 @@ const FormPage = () => {
           </div>
         </>
       )}
-      <div className="d-flex justify-content-start">
+      <div className="form-group mt-3">
+        <input
+          type="text"
+          value={data.generalTitle}
+          onChange={handleTitleChange}
+          className="form-control"
+          placeholder="Enter title (optional)"
+        />
+      </div>
+      <div className="d-flex justify-content-start mt-3">
         <button
           onClick={handleSave}
           className="btn btn-primary me-2"

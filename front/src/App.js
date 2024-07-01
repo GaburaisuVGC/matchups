@@ -65,7 +65,7 @@ const App = () => {
       >
         <p>
           <a
-            href="https://github.com/GaburaisuVGC/matchups"
+            href="https://x.com/electhor94"
             className={`text-decoration-none ${isDarkMode ? "text-white" : "text-dark"}`}
           >
             Project by Gabu
@@ -76,6 +76,14 @@ const App = () => {
             className={`text-decoration-none ${isDarkMode ? "text-white" : "text-dark"}`}
           >
             How to use it?
+          </a>
+        </p>
+        <p className={`text-small ${isDarkMode ? "text-white" : "text-dark"}`}>
+          <a
+            href="https://github.com/GaburaisuVGC/matchups"
+            className={`text-decoration-none ${isDarkMode ? "text-white" : "text-dark"}`}
+          >
+            v1.5.0
           </a>
         </p>
       </footer>
