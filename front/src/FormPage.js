@@ -47,6 +47,11 @@ const FormPage = () => {
     }
   };
 
+    const handleSaveStored = () => {
+    localStorage.setItem("storedData", JSON.stringify(data));
+    window.location.href = `${FRONT_URL}/stored`;
+    };
+
   const downloadJSON = () => {
     const jsonData = JSON.stringify(data, null, 2);
     const blob = new Blob([jsonData], { type: "application/json" });
@@ -109,7 +114,6 @@ const FormPage = () => {
     }
     return false;
   };
-  
 
   const handleTitleChange = (event) => {
     const newTitle = event.target.value;
@@ -120,7 +124,9 @@ const FormPage = () => {
     <div className={`container ${isDarkMode ? "dark-mode" : "light-mode"}`}>
       <h1 className="text-center mb-4">Matchups.net</h1>
       <div
-        className={`card mb-4 ${isDarkMode ? "card-dark-mode" : "card-light-mode"}`}
+        className={`card mb-4 ${
+          isDarkMode ? "card-dark-mode" : "card-light-mode"
+        }`}
       >
         <div className="card-body">
           <TeamForm
@@ -135,14 +141,18 @@ const FormPage = () => {
       {teamSubmitted && (
         <>
           <div
-            className={`card mb-4 ${isDarkMode ? "card-dark-mode" : "card-light-mode"}`}
+            className={`card mb-4 ${
+              isDarkMode ? "card-dark-mode" : "card-light-mode"
+            }`}
           >
             <div className="card-body">
               <CalcForm data={data} setData={setData} />
             </div>
           </div>
           <div
-            className={`card mb-4 ${isDarkMode ? "card-dark-mode" : "card-light-mode"}`}
+            className={`card mb-4 ${
+              isDarkMode ? "card-dark-mode" : "card-light-mode"
+            }`}
           >
             <div className="card-body">
               <MatchupForm data={data} setData={setData} />
@@ -166,6 +176,13 @@ const FormPage = () => {
           disabled={!teamSubmitted}
         >
           Save
+        </button>
+        <button
+          onClick={handleSaveStored}
+          className="btn btn-primary me-2"
+          disabled={!teamSubmitted}
+        >
+          Save Locally
         </button>
         <button
           onClick={downloadJSON}

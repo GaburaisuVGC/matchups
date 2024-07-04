@@ -133,6 +133,20 @@ Adamant Nature
             </li>
           </ul>
         </li>
+        <li className="list-group-item">
+          <h2>Save Locally</h2>
+          <ul>
+            <li>
+              If you don't want to make your document public, you can "Save Locally".
+            </li>
+            <li>
+                This will allow you to visualize your document without sharing it with others, thanks to the data stored in your web browser. However, your document will not be available in other web browsers or devices, unless you Save Locally everywhere you want to access it.
+            </li>
+            <li>
+                If you clear your browser data, you will lose your document.
+            </li>
+          </ul>
+        </li>
       </ol>
     </div>
   );

@@ -5,9 +5,16 @@ import JsonViewer from "./JsonViewer";
 import HowToUse from "./HowToUse";
 import initialData from "./utils/initialData";
 import "./App.css";
+import StoredViewer from "./StoredViewer";
 
 const Header = ({ isDarkMode, toggleDarkMode }) => {
   const navigate = useNavigate();
+  const [isStoredData, setIsStoredData] = useState(false);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("storedData");
+    setIsStoredData(!!storedData);
+  }, []);
 
   return (
     <header className="d-flex justify-content-between align-items-center p-3">
@@ -18,12 +25,23 @@ const Header = ({ isDarkMode, toggleDarkMode }) => {
       >
         Matchups.net
       </div>
-      <button onClick={toggleDarkMode} className="btn btn-secondary">
-        {isDarkMode ? "Light Mode" : "Dark Mode"}
-      </button>
+      <div className="d-flex">
+        <button
+          onClick={() => navigate("/stored")}
+          className="btn btn-primary me-2"
+          disabled={!isStoredData}
+        >
+          View Local Doc
+        </button>
+        <button onClick={toggleDarkMode} className="btn btn-secondary">
+          {isDarkMode ? "Light Mode" : "Dark Mode"}
+        </button>
+      </div>
     </header>
   );
 };
+
+
 
 const App = () => {
   const [data, setData] = useState(initialData);
@@ -55,6 +73,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<FormPage data={data} setData={setData} />} />
             <Route path="/how-to-use" element={<HowToUse />} />
+            <Route path="/stored" element={<StoredViewer />} />
             <Route path="/:id" element={<JsonViewer />} />
           </Routes>
         </div>
@@ -83,7 +102,7 @@ const App = () => {
             href="https://github.com/GaburaisuVGC/matchups"
             className={`text-decoration-none ${isDarkMode ? "text-white" : "text-dark"}`}
           >
-            v1.5.1
+            v1.6.0
           </a>
         </p>
       </footer>
