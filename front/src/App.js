@@ -34,7 +34,7 @@ const Header = ({ isDarkMode, toggleDarkMode }) => {
           View Local Doc
         </button>
         <button onClick={toggleDarkMode} className="btn btn-secondary">
-          {isDarkMode ? "Light Mode" : "Dark Mode"}
+          {isDarkMode ? "💡" : "🌙"}
         </button>
       </div>
     </header>
@@ -102,7 +102,7 @@ const App = () => {
             href="https://github.com/GaburaisuVGC/matchups"
             className={`text-decoration-none ${isDarkMode ? "text-white" : "text-dark"}`}
           >
-            v1.6.2
+            v1.6.3
           </a>
         </p>
       </footer>

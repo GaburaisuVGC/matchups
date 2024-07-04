@@ -137,13 +137,33 @@ Adamant Nature
           <h2>Save Locally</h2>
           <ul>
             <li>
-              If you don't want to make your document public, you can "Save Locally".
+              If you don't want to make your document public, you can "Save Locally". (Only one document can be saved locally at a time.)
+            </li>
+            <li>
+                You'll be able to access it with the "View Local Doc" button, or <a href="/stored">by clicking here</a>.
             </li>
             <li>
                 This will allow you to visualize your document without sharing it with others, thanks to the data stored in your web browser. However, your document will not be available in other web browsers or devices, unless you Save Locally everywhere you want to access it.
             </li>
             <li>
                 If you clear your browser data, you will lose your document.
+            </li>
+          </ul>
+        </li>
+        <li className="list-group-item">
+          <h2>Best method to Save Locally & Share</h2>
+          <p>
+            While not being the most user-friendly method, the best way to save your document locally and share it with others is to:
+          </p>
+          <ul>
+            <li>
+                After saving your document locally, download the JSON file.
+            </li>
+            <li>
+                Send the JSON file to the person you want to share your document with.
+            </li>
+            <li>
+                They can then load and save the JSON file to Matchups.net by clicking "Load Draft" then "Save Locally".
             </li>
           </ul>
         </li>
