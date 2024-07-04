@@ -102,7 +102,7 @@ const App = () => {
             href="https://github.com/GaburaisuVGC/matchups"
             className={`text-decoration-none ${isDarkMode ? "text-white" : "text-dark"}`}
           >
-            v1.6.1
+            v1.6.2
           </a>
         </p>
       </footer>

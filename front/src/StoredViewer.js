@@ -50,6 +50,7 @@ const StoredViewer = () => {
         fetchStoredData(storedData);
     }
 
+    // eslint-disable-next-line
 }, []);
 
   const fetchPokemonImages = async (pasteId) => {
