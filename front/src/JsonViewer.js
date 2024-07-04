@@ -62,7 +62,7 @@ const JsonViewer = () => {
       const images = await response.json();
       setPokemonImages(images);
     } catch (error) {
-      setError("Failed to fetch Pokémon images");
+      console.error("Failed to fetch Pokémon images");
     }
   };
 
