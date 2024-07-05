@@ -6,6 +6,8 @@ import HowToUse from "./HowToUse";
 import initialData from "./utils/initialData";
 import "./App.css";
 import StoredViewer from "./StoredViewer";
+import CookieConsent from "./CookieConsent";
+import PrivacyPolicy from "./PrivacyPolicy";
 
 const Header = ({ isDarkMode, toggleDarkMode }) => {
   const navigate = useNavigate();
@@ -69,11 +71,13 @@ const App = () => {
     >
       <Router>
         <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+        <CookieConsent />
         <div className="container-fluid flex-grow-1">
           <Routes>
             <Route path="/" element={<FormPage data={data} setData={setData} />} />
             <Route path="/how-to-use" element={<HowToUse />} />
             <Route path="/stored" element={<StoredViewer />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/:id" element={<JsonViewer />} />
           </Routes>
         </div>
@@ -95,6 +99,13 @@ const App = () => {
             className={`text-decoration-none ${isDarkMode ? "text-white" : "text-dark"}`}
           >
             How to use it?
+          </a>{" "}
+          |{" "}
+          <a
+            href="/privacy-policy"
+            className={`text-decoration-none ${isDarkMode ? "text-white" : "text-dark"}`}
+          >
+            Privacy Policy
           </a>
         </p>
         <p className={`text-small ${isDarkMode ? "text-white" : "text-dark"}`}>
@@ -102,7 +113,7 @@ const App = () => {
             href="https://github.com/GaburaisuVGC/matchups"
             className={`text-decoration-none ${isDarkMode ? "text-white" : "text-dark"}`}
           >
-            v1.6.3
+            v1.7.0
           </a>
         </p>
       </footer>
