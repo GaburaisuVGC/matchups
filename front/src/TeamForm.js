@@ -70,16 +70,22 @@ const TeamForm = ({ data, setData }) => {
       body: formData.toString(),
     });
 
-    const responseText = await response.text();
-    const pasteIdMatch = responseText.match(/window\.PASTE_ID\s*=\s*"(\w+)";/);
-    if (pasteIdMatch) {
-      const pasteId = pasteIdMatch[1];
-      setPasteId(pasteId);
-      setData((prevData) => ({
-        ...prevData,
-        paste: pasteId,
-      }));
-    }
+      if (response.url) {
+        // prendre le dernier segment de l'URL comme ID de paste
+        const pasteIdMatch = response.url.match(/\/([^/]+)\/?$/);
+        if (pasteIdMatch) {
+          const pasteId = pasteIdMatch[1];
+          setPasteId(pasteId);
+          setData((prevData) => ({
+            ...prevData,
+            paste: pasteId,
+          }));
+        } else {
+          console.error("Impossible d'extraire le Paste ID de l'en-tête Location.");
+        }
+      } else {
+        console.error("URL non trouvée dans la réponse.");
+      }
 
     setTeamInput("");
   };
