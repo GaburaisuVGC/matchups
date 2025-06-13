@@ -88,10 +88,10 @@ const App = () => {
       >
         <p>
           <a
-            href="https://x.com/electhor94"
+            href="https://matthieu-barbe.dev/"
             className={`text-decoration-none ${isDarkMode ? "text-white" : "text-dark"}`}
           >
-            Project by Gabu
+            Project by Matthieu Barbe
           </a>{" "}
           |{" "}
           <a
@@ -113,7 +113,7 @@ const App = () => {
             href="https://github.com/GaburaisuVGC/matchups"
             className={`text-decoration-none ${isDarkMode ? "text-white" : "text-dark"}`}
           >
-            v1.7.1
+            v1.7.2
           </a>
         </p>
       </footer>
