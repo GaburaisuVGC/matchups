@@ -191,7 +191,7 @@ const FormPage = () => {
               onClick={() => setActiveFormTab("matchups")}
               disabled={!teamSubmitted}
             >
-              <i className="fas fa-swords me-2"></i>&nbsp;Matchups
+              <i className="fas fa-gamepad me-2"></i>&nbsp;Matchups
             </button>
           </div>
 
@@ -208,19 +208,15 @@ const FormPage = () => {
               </div>
             )}
             {activeFormTab === "calcs" && teamSubmitted && (
-              <div className="form-section-modern">
-                <CalcForm data={data} setData={setData} />
-              </div>
+              <CalcForm data={data} setData={setData} />
             )}
             {activeFormTab === "matchups" && teamSubmitted && (
-              <div className="form-section-modern">
-                <MatchupForm
-                  data={data}
-                  setData={setData}
-                  selectedMatchup={selectedMatchup}
-                  setSelectedMatchup={setSelectedMatchup}
-                />
-              </div>
+              <MatchupForm
+                data={data}
+                setData={setData}
+                selectedMatchup={selectedMatchup}
+                setSelectedMatchup={setSelectedMatchup}
+              />
             )}
           </div>
         </div>

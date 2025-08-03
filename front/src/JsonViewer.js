@@ -250,7 +250,7 @@ const JsonViewer = () => {
             className={`viewer-tab ${activeTab === "matchups" ? "active" : ""}`}
             onClick={() => setActiveTab("matchups")}
           >
-            <i className="fas fa-swords me-2"></i>
+            <i className="fas fa-gamepad me-2"></i>
             Matchups ({data.matchups.length})
           </span>
           <span
@@ -265,12 +265,13 @@ const JsonViewer = () => {
 
       {/* Main Layout: Desktop */}
       <div className="d-none d-lg-block mb-4">
+        {renderDocumentHeader()}
         <div className="form-tabs">
           <button
             className={`form-tab ${activeViewerTab === "matchups" ? "active" : ""}`}
             onClick={() => setActiveViewerTab("matchups")}
           >
-            <i className="fas fa-swords me-2"></i> Matchups
+            <i className="fas fa-gamepad me-2"></i> Matchups
           </button>
           <button
             className={`form-tab ${activeViewerTab === "team" ? "active" : ""}`}
@@ -540,7 +541,6 @@ const JsonViewer = () => {
             </div>
           </div>
         </div>
-        {renderDocumentHeader()}
       </div>
 
       {/* Mobile Content */}

@@ -62,14 +62,14 @@ const CalcForm = ({ data, setData }) => {
   const selectedPokemonForTab = data.team[selectedPokemonTab];
 
   return (
-    <div>
+    <div className="form-section-modern p-3 p-lg-4">
       <h2 className="form-title-modern mb-4">
         <i className="fas fa-calculator me-2 text-accent-modern"></i>
         Damage Calculations
       </h2>
 
       {/* Add Calculation Form */}
-      <div className="content-card-modern mb-4">
+      <div className="mb-4">
         <h5 className="mb-3">
           <i className="fas fa-plus me-2"></i>
           Add New Calculation
@@ -148,7 +148,7 @@ const CalcForm = ({ data, setData }) => {
       </div>
 
       {/* Calculations Display */}
-      <div className="content-card-modern p-0-mobile">
+      <div>
         <div className="d-flex align-items-center justify-content-between mb-3">
           <h5 className="mb-0">
             <i className="fas fa-list me-2"></i>
@@ -184,7 +184,7 @@ const CalcForm = ({ data, setData }) => {
                     className={`calc-tab ${activeCalcTab === 'offensive' ? 'active' : ''}`}
                     onClick={() => setActiveCalcTab('offensive')}
                   >
-                    <i className="fas fa-sword me-2"></i>&nbsp;Offensive
+                    <i className="fas fa-khanda me-2"></i>&nbsp;Offensive
                   </div>
                   <div
                     className={`calc-tab ${activeCalcTab === 'defensive' ? 'active' : ''}`}

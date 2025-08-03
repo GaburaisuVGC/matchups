@@ -705,9 +705,6 @@ body.dark-mode {
   opacity: 0.5 !important;
   cursor: not-allowed !important;
   pointer-events: auto !important;
-  filter: grayscale(50%) !important;
-  transform: none !important;
-  box-shadow: none !important;
 }
 
 /* Dark mode inputs - texte blanc */
@@ -816,7 +813,7 @@ body.dark-mode {
 }
 
 .gameplan-compact-section {
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-xs) var(--spacing-md);
 }
 
 .gameplan-compact-section + .gameplan-compact-section {
@@ -843,7 +840,7 @@ body.dark-mode {
     padding-right: 0 !important;
   }
   .pokemon-mobile-card {
-    padding: var(--spacing-sm) !important;
+    padding: var(--spacing-xs) var(--spacing-sm) !important;
   }
 }
 
@@ -1450,15 +1447,15 @@ body.dark-mode {
 }
 
 .lead-select {
-  background-color: var(--accent-primary-light);
+  background-color: var(--accent-primary-dark);
   color: white;
-  border-color: var(--accent-primary-light);
+  border-color: var(--accent-primary-dark);
 }
 
 .back-select {
-  background-color: var(--accent-secondary-light);
+  background-color: var(--accent-secondary-dark);
   color: white;
-  border-color: var(--accent-secondary-light);
+  border-color: var(--accent-secondary-dark);
 }
 
 .dark-mode .lead-select {

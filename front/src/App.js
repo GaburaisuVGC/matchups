@@ -35,10 +35,6 @@ const Header = ({ isDarkMode, toggleDarkMode }) => {
                 onClick={() => navigate("/stored")}
                 className="btn btn-secondary-modern"
                 disabled={!isStoredData}
-                style={{ 
-                  opacity: !isStoredData ? 0.5 : 1,
-                  cursor: !isStoredData ? 'not-allowed' : 'pointer'
-                }}
               >
                 <i className="fas fa-folder-open me-2"></i>
                 View Local Doc
@@ -88,10 +84,6 @@ const Header = ({ isDarkMode, toggleDarkMode }) => {
             onClick={() => navigate("/stored")}
             className="mobile-nav-btn"
             disabled={!isStoredData}
-            style={{ 
-              opacity: !isStoredData ? 0.5 : 1,
-              cursor: !isStoredData ? 'not-allowed' : 'pointer'
-            }}
             aria-label="Local Document"
           >
             <i className="fas fa-folder-open"></i>
