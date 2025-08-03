@@ -1,16 +1,13 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { parseTeam } from "./utils/parseTeam";
-import ImageLoader from "./ImageLoader";
 
 const TeamForm = ({ data, setData }) => {
   const [teamInput, setTeamInput] = useState("");
   const [pasteId, setPasteId] = useState(data?.paste || "");
-  const [pokemonImages, setPokemonImages] = useState([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [loadingImages, setLoadingImages] = useState(false);
   const [isNewPaste, setIsNewPaste] = useState(false);
   const BACK_URL = process.env.REACT_APP_BACK_URL;
 
@@ -27,35 +24,6 @@ const TeamForm = ({ data, setData }) => {
       setIsSubmitted(true);
     }
   }, [data?.team]);
-
-  useEffect(() => {
-    if (pasteId) {
-      fetchPokemonImages(pasteId);
-    }
-    // eslint-disable-next-line
-  }, [pasteId]);
-
-  const fetchPokemonImages = async (pasteId) => {
-    if (!pasteId) return;
-
-    if (isNewPaste) {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setIsNewPaste(false);
-    }
-
-    setLoadingImages(true);
-    try {
-      const response = await fetch(
-        `${BACK_URL}/parse-pokebin?pasteId=${pasteId}`
-      );
-      const images = await response.json();
-      setPokemonImages(images);
-    } catch (error) {
-      console.error("Failed to fetch Pokémon images", error);
-    } finally {
-      setLoadingImages(false);
-    }
-  };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -126,7 +94,6 @@ const TeamForm = ({ data, setData }) => {
   const handleReset = () => {
     setTeamInput("");
     setPasteId("");
-    setPokemonImages([]);
     setError("");
     setIsSubmitted(false);
     setData((prevData) => ({
@@ -167,7 +134,6 @@ const TeamForm = ({ data, setData }) => {
               rows="12"
               className="form-control form-control-modern"
               placeholder="Paste your Pokémon Showdown team export here...
-
 Example:
 Charizard @ Life Orb
 Ability: Solar Power
@@ -254,61 +220,6 @@ IVs: 0 Atk
             </div>
           )}
 
-          {/* Pokemon Images */}
-          {(pokemonImages.length > 0 || loadingImages) && (
-            <div>
-              <h5 className="mb-3">
-                <i className="fas fa-images me-2"></i>
-                Team Preview ({loadingImages ? 'Loading...' : `${pokemonImages.length} Pokémon`})
-              </h5>
-              <div className="row g-3">
-                {loadingImages ? (
-                  // Loading skeletons
-                  Array.from({ length: data?.team?.length || 6 }).map((_, index) => (
-                    <div key={index} className="col-6 col-md-4 col-lg-2">
-                      <div className="text-center">
-                        <ImageLoader
-                          src=""
-                          alt=""
-                          className="border-0"
-                          style={{ 
-                            width: "80px", 
-                            height: "80px"
-                          }}
-                          showSkeleton={true}
-                        />
-                        <div className="text-muted-modern mt-1">
-                          <small>#{index + 1}</small>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  pokemonImages.map((src, index) => (
-                    <div key={index} className="col-6 col-md-4 col-lg-2">
-                      <div className="text-center">
-                        <ImageLoader
-                          src={src}
-                          alt={`Pokémon ${index + 1}`}
-                          className="img-thumbnail"
-                          style={{ 
-                            width: "80px", 
-                            height: "80px", 
-                            objectFit: "contain",
-                            background: "transparent"
-                          }}
-                        />
-                        <div className="text-muted-modern mt-1">
-                          <small>#{index + 1}</small>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-          )}
-
           {/* Team Stats */}
           <div className="mt-4 pt-3 border-top">
             <div className="row text-center">
@@ -321,12 +232,6 @@ IVs: 0 Atk
                   {pasteId ? <span className="text-success">✓</span> : <span className="text-danger">✗</span>}
                 </div>
                 <div className="text-muted-modern small">PokeBin</div>
-              </div>
-              <div className="col-4">
-                <div className="fw-bold h4">
-                  {pokemonImages.length > 0 ? <span className="text-success">✓</span> : <span className="text-danger">✗</span>}
-                </div>
-                <div className="text-muted-modern small">Images</div>
               </div>
             </div>
           </div>
