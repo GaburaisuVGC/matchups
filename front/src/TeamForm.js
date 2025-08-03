@@ -211,7 +211,7 @@ IVs: 0 Atk
           </div>
         </form>
       ) : (
-        <div className="content-card-modern">
+        <div className="content-card-modern p-0-mobile">
           {/* Team Success State */}
           <div className="d-flex align-items-center mb-3">
             <div className="d-flex align-items-center">
@@ -315,14 +315,14 @@ IVs: 0 Atk
                 <div className="text-muted-modern small">Pokémon</div>
               </div>
               <div className="col-4">
-                <div className="text-accent-modern fw-bold h4">
-                  {pasteId ? "✓" : "✗"}
+                <div className="fw-bold h4">
+                  {pasteId ? <span className="text-success">✓</span> : <span className="text-danger">✗</span>}
                 </div>
                 <div className="text-muted-modern small">PokeBin</div>
               </div>
               <div className="col-4">
-                <div className="text-accent-modern fw-bold h4">
-                  {pokemonImages.length > 0 ? "✓" : "✗"}
+                <div className="fw-bold h4">
+                  {pokemonImages.length > 0 ? <span className="text-success">✓</span> : <span className="text-danger">✗</span>}
                 </div>
                 <div className="text-muted-modern small">Images</div>
               </div>

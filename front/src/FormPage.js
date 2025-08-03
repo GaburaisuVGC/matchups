@@ -8,6 +8,8 @@ import "./App.css";
 const FormPage = () => {
   const [data, setData] = useState({ ...initialData, generalTitle: "" });
   const [teamSubmitted, setTeamSubmitted] = useState(false);
+  const [activeFormTab, setActiveFormTab] = useState("team");
+  const [selectedMatchup, setSelectedMatchup] = useState(0);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [saveStatus, setSaveStatus] = useState("");
@@ -131,16 +133,16 @@ const FormPage = () => {
 
   return (
     <div className="fade-in">
-      {/* CTA How To Use - Above the fold */}
-      <div className="cta-how-to-use text-center">
+      {/* CTA How To Use */}
+      <div className="cta-how-to-use-subtle text-center">
         <div className="d-flex align-items-center justify-content-center mb-3">
           <i className="fas fa-rocket fa-2x me-3"></i>
-          <div>
+          <div className="text-start">
             <h2 className="h4 mb-1">New to Matchups.net?</h2>
             <p className="mb-0 opacity-90">Learn how to create professional tournament preparation documents</p>
           </div>
         </div>
-        <a href="/how-to-use" className="btn btn-light btn-lg">
+        <a href="/how-to-use" className="btn btn-subtle-modern btn-lg">
           <i className="fas fa-question-circle me-2"></i>
           Quick Start Guide
         </a>
@@ -164,139 +166,236 @@ const FormPage = () => {
         </div>
       )}
 
-      {/* Team Form Section */}
-      <div className="form-section-modern">
-        <TeamForm
-          data={data}
-          setData={(newData) => {
-            setData(newData);
-            setTeamSubmitted(true);
-          }}
-        />
-      </div>
-
-      {/* Conditional Sections - Only show after team submission */}
-      {teamSubmitted && (
-        <>
-          {/* Calculations Section */}
-          <div className="form-section-modern">
-            <CalcForm data={data} setData={setData} />
+      <div className="homepage-desktop-layout">
+        <div className="homepage-main-content">
+          <div className="form-tabs">
+            <button
+              className={`form-tab ${activeFormTab === "team" ? "active" : ""}`}
+              onClick={() => setActiveFormTab("team")}
+            >
+              <i className="fas fa-users me-2"></i> Team
+            </button>
+            <button
+              className={`form-tab ${
+                activeFormTab === "calcs" ? "active" : ""
+              }`}
+              onClick={() => setActiveFormTab("calcs")}
+              disabled={!teamSubmitted}
+            >
+              <i className="fas fa-calculator me-2"></i> Calculations
+            </button>
+            <button
+              className={`form-tab ${
+                activeFormTab === "matchups" ? "active" : ""
+              }`}
+              onClick={() => setActiveFormTab("matchups")}
+              disabled={!teamSubmitted}
+            >
+              <i className="fas fa-swords me-2"></i>&nbsp;Matchups
+            </button>
           </div>
 
-          {/* Matchups Section */}
-          <div className="form-section-modern">
-            <MatchupForm data={data} setData={setData} />
-          </div>
-        </>
-      )}
-
-      {/* Document Title Section */}
-      <div className="form-section-modern">
-        <div className="form-group-modern">
-          <label className="form-label-modern">
-            <i className="fas fa-heading me-2"></i>
-            Document Title (Optional)
-          </label>
-          <input
-            type="text"
-            value={data.generalTitle}
-            onChange={handleTitleChange}
-            className="form-control form-control-modern"
-            placeholder="Enter a title for your document..."
-            maxLength={100}
-          />
-          <div className="text-muted-modern mt-2">
-            <small>{data.generalTitle.length}/100 characters</small>
+          <div className="form-content">
+            {activeFormTab === "team" && (
+              <div className="form-section-modern">
+                <TeamForm
+                  data={data}
+                  setData={(newData) => {
+                    setData(newData);
+                    setTeamSubmitted(true);
+                  }}
+                />
+              </div>
+            )}
+            {activeFormTab === "calcs" && teamSubmitted && (
+              <div className="form-section-modern">
+                <CalcForm data={data} setData={setData} />
+              </div>
+            )}
+            {activeFormTab === "matchups" && teamSubmitted && (
+              <div className="form-section-modern">
+                <MatchupForm
+                  data={data}
+                  setData={setData}
+                  selectedMatchup={selectedMatchup}
+                  setSelectedMatchup={setSelectedMatchup}
+                />
+              </div>
+            )}
           </div>
         </div>
-      </div>
+        <div className="homepage-sidebar">
+          <div className="homepage-sticky-actions">
+            {/* Matchup Navigation */}
+            {activeFormTab === "matchups" && data.matchups.length > 0 && (
+              <div className="form-section-modern">
+                <div className="matchups-sidebar">
+                  <h5 className="mb-3">
+                    <i className="fas fa-list me-2"></i>
+                    Your Matchups
+                  </h5>
+                  <div className="matchups-nav">
+                    {data.matchups.map((matchup, index) => (
+                      <div
+                        key={index}
+                        className={`matchup-nav-item ${
+                          selectedMatchup === index ? "active" : ""
+                        }`}
+                        onClick={() => setSelectedMatchup(index)}
+                      >
+                        <div className="flex-grow-1">
+                          <div
+                            className="fw-medium"
+                            style={{ fontSize: "0.875rem" }}
+                          >
+                            {matchup.title}
+                          </div>
+                          <small className="text-muted">
+                            {matchup.gameplans.length} gameplan
+                            {matchup.gameplans.length !== 1 ? "s" : ""}
+                          </small>
+                        </div>
+                        <span className="matchup-nav-badge">
+                          {matchup.gameplans.length}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
 
-      {/* Action Buttons Section */}
-      <div className="form-section-modern">
-        <div className="row g-3">
-          {/* Primary Actions */}
-          <div className="col-md-6">
-            <div className="d-grid gap-2">
-              <button
-                onClick={handleSave}
-                className="btn btn-primary-modern d-flex align-items-center justify-content-center"
-                disabled={!teamSubmitted || isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <div className="spinner-border spinner-border-sm me-2" role="status">
-                      <span className="visually-hidden">Loading...</span>
-                    </div>
-                    Saving...
-                  </>
-                ) : (
-                  <>
-                    <i className="fas fa-cloud-upload-alt me-2"></i>
-                    Save & Share
-                  </>
-                )}
-              </button>
-              <button
-                onClick={handleSaveStored}
-                className="btn btn-secondary-modern d-flex align-items-center justify-content-center"
-                disabled={!teamSubmitted}
-              >
-                <i className="fas fa-save me-2"></i>
-                Save Locally
-              </button>
-            </div>
-          </div>
-
-          {/* Secondary Actions */}
-          <div className="col-md-6">
-            <div className="d-grid gap-2">
-              <button
-                onClick={downloadJSON}
-                className="btn btn-secondary-modern d-flex align-items-center justify-content-center"
-                disabled={!teamSubmitted}
-              >
-                <i className="fas fa-download me-2"></i>
-                Download Draft
-              </button>
-              <div className="position-relative">
+            {/* Document Title Section */}
+            <div className="form-section-modern">
+              <div className="form-group-modern">
+                <label className="form-label-modern">
+                  <i className="fas fa-heading me-2"></i>
+                  Document Title (Optional)
+                </label>
                 <input
-                  type="file"
-                  accept=".json"
-                  onChange={handleFileUpload}
-                  className="position-absolute opacity-0"
-                  style={{ left: "-9999px" }}
-                  id="file-upload"
+                  type="text"
+                  value={data.generalTitle}
+                  onChange={handleTitleChange}
+                  className="form-control form-control-modern"
+                  placeholder="Enter a title for your document..."
+                  maxLength={100}
                 />
-                <button
-                  className="btn btn-secondary-modern w-100 d-flex align-items-center justify-content-center"
-                  onClick={() => document.getElementById("file-upload").click()}
-                >
-                  <i className="fas fa-upload me-2"></i>
-                  Load Draft
-                </button>
+                <div className="text-muted-modern mt-2">
+                  <small>{data.generalTitle.length}/100 characters</small>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Help Text */}
-        <div className="mt-4 p-3 rounded border">
-          <div className="row text-center">
-            <div className="col-md-3 mb-3 mb-md-0">
-              <i className="fas fa-cloud-upload-alt text-accent-modern fa-2x mb-2"></i>
-              <p className="small text-muted-modern mb-0">Save & Share creates a public link</p>
-            </div>
-            <div className="col-md-3 mb-3 mb-md-0">
-              <i className="fas fa-save text-accent-modern fa-2x mb-2"></i>
-              <p className="small text-muted-modern mb-0">Save Locally stores in your browser</p>
-            </div>
-            <div className="col-md-3 mb-3 mb-md-0">
-              <i className="fas fa-download text-accent-modern fa-2x mb-2"></i>
-              <p className="small text-muted-modern mb-0">Download Draft saves as JSON file</p>
-            </div>
-            <div className="col-md-3">
-              <i className="fas fa-upload text-accent-modern fa-2x mb-2"></i>
-              <p className="small text-muted-modern mb-0">Load Draft opens a saved JSON file</p>
+            {/* Action Buttons Section */}
+            <div className="form-section-modern">
+              <div className="row g-3">
+                {/* Primary Actions */}
+                <div className="col-md-6">
+                  <div className="d-grid gap-2">
+                    <button
+                      onClick={handleSave}
+                      className="btn btn-primary-modern d-flex align-items-center justify-content-center"
+                      disabled={!teamSubmitted || isLoading}
+                    >
+                      {isLoading ? (
+                        <>
+                          <div
+                            className="spinner-border spinner-border-sm me-2"
+                            role="status"
+                          >
+                            <span className="visually-hidden">Loading...</span>
+                          </div>
+                          Saving...
+                        </>
+                      ) : (
+                        <>
+                          <i className="fas fa-cloud-upload-alt me-2"></i>
+                          Save & Share
+                        </>
+                      )}
+                    </button>
+                    <button
+                      onClick={handleSaveStored}
+                      className="btn btn-secondary-modern d-flex align-items-center justify-content-center"
+                      disabled={!teamSubmitted}
+                    >
+                      <i className="fas fa-save me-2"></i>
+                      Save Locally
+                    </button>
+                  </div>
+                </div>
+
+                {/* Secondary Actions */}
+                <div className="col-md-6">
+                  <div className="d-grid gap-2">
+                    <button
+                      onClick={downloadJSON}
+                      className="btn btn-secondary-modern d-flex align-items-center justify-content-center"
+                      disabled={!teamSubmitted}
+                    >
+                      <i className="fas fa-download me-2"></i>
+                      Download Draft
+                    </button>
+                    <div className="position-relative">
+                      <input
+                        type="file"
+                        accept=".json"
+                        onChange={handleFileUpload}
+                        className="position-absolute opacity-0"
+                        style={{ left: "-9999px" }}
+                        id="file-upload"
+                      />
+                      <button
+                        className="btn btn-secondary-modern w-100 d-flex align-items-center justify-content-center"
+                        onClick={() =>
+                          document.getElementById("file-upload").click()
+                        }
+                      >
+                        <i className="fas fa-upload me-2"></i>
+                        Load Draft
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Help Text */}
+              <div className="mt-4 p-3 rounded border">
+                <div className="row text-center">
+                  <div className="col-md-3 mb-3 mb-md-0">
+                    <div className="help-icon-wrapper">
+                      <i className="fas fa-cloud-upload-alt text-accent-modern fa-2x"></i>
+                    </div>
+                    <p className="small text-muted-modern mb-0 help-text-small">
+                      Save & Share creates a public link
+                    </p>
+                  </div>
+                  <div className="col-md-3 mb-3 mb-md-0">
+                    <div className="help-icon-wrapper">
+                      <i className="fas fa-save text-accent-modern fa-2x"></i>
+                    </div>
+                    <p className="small text-muted-modern mb-0 help-text-small">
+                      Save Locally stores in your browser
+                    </p>
+                  </div>
+                  <div className="col-md-3 mb-3 mb-md-0">
+                    <div className="help-icon-wrapper">
+                      <i className="fas fa-download text-accent-modern fa-2x"></i>
+                    </div>
+                    <p className="small text-muted-modern mb-0 help-text-small">
+                      Download Draft saves as JSON file
+                    </p>
+                  </div>
+                  <div className="col-md-3">
+                    <div className="help-icon-wrapper">
+                      <i className="fas fa-upload text-accent-modern fa-2x"></i>
+                    </div>
+                    <p className="small text-muted-modern mb-0 help-text-small">
+                      Load Draft opens a saved JSON file
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

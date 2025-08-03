@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./App.css";
@@ -13,13 +14,19 @@ const StoredViewer = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [expandedPokemon, setExpandedPokemon] = useState(null);
   const [expandedMatchup, setExpandedMatchup] = useState(null);
-  const [expandedGameplan, setExpandedGameplan] = useState({});
   const [pokemonImages, setPokemonImages] = useState([]);
   const [loadingImages, setLoadingImages] = useState(false);
   const [selectedMatchup, setSelectedMatchup] = useState(0);
   const [activeTab, setActiveTab] = useState("matchups");
   const [selectedPokemon, setSelectedPokemon] = useState(0);
+  const [activeCalcTab, setActiveCalcTab] = useState("offensive");
+  const [activeViewerTab, setActiveViewerTab] = useState("matchups");
   const BACK_URL = process.env.REACT_APP_BACK_URL;
+
+  useEffect(() => {
+    // Reset calc tab to default when pokemon selection changes
+    setActiveCalcTab("offensive");
+  }, [selectedPokemon]);
 
   useEffect(() => {
     const darkMode = localStorage.getItem("darkMode") === "true";
@@ -37,14 +44,6 @@ const StoredViewer = () => {
         const parsedData = JSON.parse(data);
         setData(parsedData);
         
-        const initialExpandedGameplan = {};
-        parsedData.matchups.forEach((_, index) => {
-          if (parsedData.matchups[index].gameplans.length > 0) {
-            initialExpandedGameplan[index] = 0;
-          }
-        });
-        setExpandedGameplan(initialExpandedGameplan);
-
         await fetchPokemonImages(parsedData.paste);
       } catch (error) {
         setError(error.message);
@@ -153,91 +152,85 @@ const StoredViewer = () => {
     );
   }
 
-  return (
-    <div className="fade-in">
-      {/* Document Header */}
-      <div className="content-card-modern mb-4">
-        <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
-          <div className="flex-grow-1">
-            <div className="d-flex align-items-center mb-2">
-              <i className="fas fa-hdd text-success me-2"></i>
-              <span className="badge bg-success me-2">Local</span>
-              <h1 className="h3 mb-0">{pageTitle}</h1>
-            </div>
-            <div className="d-flex align-items-center gap-3 text-muted-modern flex-wrap">
-              <span>
-                <i className="fas fa-users me-1"></i>
-                {data.team.length} Pokémon
-              </span>
-              <span>
-                <i className="fas fa-swords me-1"></i>
-                {data.matchups.length} Matchup{data.matchups.length !== 1 ? 's' : ''}
-              </span>
-              {data.paste && (
-                <div className="paste-link-container">
-                  <a
-                    href={`https://pokebin.com/${data.paste}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-decoration-none"
-                  >
-                    <i className="fas fa-external-link-alt me-1"></i>
-                    View Paste
-                  </a>
-                </div>
-              )}
-            </div>
+  const renderDocumentHeader = () => (
+    <div className="content-card-modern mb-4">
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+        <div className="flex-grow-1">
+          <div className="d-flex align-items-center mb-2">
+            <i className="fas fa-hdd text-success me-2"></i>
+            <span className="badge bg-success me-2">Local</span>
+            <h1 className="h3 mb-0">{pageTitle}</h1>
           </div>
-          <div className="btn-group-modern">
-            <button 
-              onClick={handleQuickEdit} 
-              className="btn btn-primary-modern"
-            >
-              <i className="fas fa-edit me-2"></i>
-              <span className="d-none d-sm-inline">Quick Edit</span>
-              <span className="d-sm-none">Edit</span>
-            </button>
-            <button 
-              onClick={downloadJSON} 
-              className="btn btn-secondary-modern"
-            >
-              <i className="fas fa-download me-2"></i>
-              <span className="d-none d-sm-inline">Download</span>
-              <span className="d-sm-none">JSON</span>
-            </button>
-            <button 
-              onClick={handleCleanStorage} 
-              className="btn btn-outline-danger"
-              title="Delete local document"
-            >
-              <i className="fas fa-trash me-2"></i>
-              <span className="d-none d-sm-inline">Delete</span>
-              <span className="d-sm-none">Del</span>
-            </button>
+          <div className="d-flex align-items-center gap-3 text-muted-modern flex-wrap">
+            <span>
+              <i className="fas fa-users me-1"></i>
+              {data.team.length} Pokémon
+            </span>
+            <span>
+              <i className="fas fa-swords me-1"></i>
+              {data.matchups.length} Matchup
+              {data.matchups.length !== 1 ? "s" : ""}
+            </span>
+            {data.paste && (
+              <div className="paste-link-container">
+                <a
+                  href={`https://pokebin.com/${data.paste}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-decoration-none"
+                >
+                  <i className="fas fa-external-link-alt me-1"></i>
+                  View Paste
+                </a>
+              </div>
+            )}
           </div>
         </div>
-
-        {/* Local Storage Info */}
-        <div className="mt-3 p-3 border rounded">
-          <div className="d-flex align-items-center text-success">
-            <i className="fas fa-shield-alt me-2"></i>
-            <strong>Stored Locally</strong>
-          </div>
-          <p className="text-muted-modern mb-0 mt-1">
-            This document is saved in your browser's local storage. It's private and only accessible from this device.
-          </p>
+        <div className="btn-group-modern">
+          <button onClick={handleQuickEdit} className="btn btn-primary-modern">
+            <i className="fas fa-edit me-2"></i>
+            <span className="d-none d-sm-inline">Quick Edit</span>
+            <span className="d-sm-none">Edit</span>
+          </button>
+          <button onClick={downloadJSON} className="btn btn-secondary-modern">
+            <i className="fas fa-download me-2"></i>
+            <span className="d-none d-sm-inline">Download</span>
+            <span className="d-sm-none">JSON</span>
+          </button>
+          <button
+            onClick={handleCleanStorage}
+            className="btn btn-outline-danger"
+            title="Delete local document"
+          >
+            <i className="fas fa-trash me-2"></i>
+            <span className="d-none d-sm-inline">Delete</span>
+            <span className="d-sm-none">Del</span>
+          </button>
         </div>
+      </div>
 
-        {/* Team Preview Images */}
-        {(pokemonImages.length > 0 || loadingImages) && (
-          <div className="mt-4 pt-3 border-top">
-            <h5 className="mb-3">
-              <i className="fas fa-images me-2"></i>
-              Team Preview
-            </h5>
-            <div className="row g-3">
-              {loadingImages ? (
-                Array.from({ length: data.team.length }).map((_, index) => (
+      {/* Local Storage Info */}
+      <div className="mt-3 p-3 border rounded">
+        <div className="d-flex align-items-center text-success">
+          <i className="fas fa-shield-alt me-2"></i>
+          <strong>Stored Locally</strong>
+        </div>
+        <p className="text-muted-modern mb-0 mt-1">
+          This document is saved in your browser's local storage. It's private
+          and only accessible from this device.
+        </p>
+      </div>
+
+      {/* Team Preview Images */}
+      {(pokemonImages.length > 0 || loadingImages) && (
+        <div className="mt-4 pt-3 border-top">
+          <h5 className="mb-3">
+            <i className="fas fa-images me-2"></i>
+            Team Preview
+          </h5>
+          <div className="row g-3">
+            {loadingImages
+              ? Array.from({ length: data.team.length }).map((_, index) => (
                   <div key={index} className="col-6 col-md-4 col-lg-2">
                     <div className="text-center">
                       <ImageLoader
@@ -253,19 +246,18 @@ const StoredViewer = () => {
                     </div>
                   </div>
                 ))
-              ) : (
-                pokemonImages.map((src, index) => (
+              : pokemonImages.map((src, index) => (
                   <div key={index} className="col-6 col-md-4 col-lg-2">
                     <div className="text-center">
                       <ImageLoader
                         src={src}
                         alt={`Pokémon ${index + 1}`}
                         className="img-thumbnail"
-                        style={{ 
-                          width: "80px", 
-                          height: "80px", 
+                        style={{
+                          width: "80px",
+                          height: "80px",
                           objectFit: "contain",
-                          background: "transparent"
+                          background: "transparent",
                         }}
                       />
                       <div className="text-muted-modern mt-1">
@@ -273,13 +265,15 @@ const StoredViewer = () => {
                       </div>
                     </div>
                   </div>
-                ))
-              )}
-            </div>
+                ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
+    </div>
+  );
 
+  return (
+    <div className="fade-in">
       {/* Mobile Tabs */}
       <div className="d-block d-lg-none mb-4">
         <div className="viewer-tabs">
@@ -301,296 +295,290 @@ const StoredViewer = () => {
       </div>
 
       {/* Main Layout: Desktop */}
-      <div className="d-none d-lg-block">
+      <div className="d-none d-lg-block mb-4">
+        <div className="form-tabs">
+          <button
+            className={`form-tab ${activeViewerTab === "matchups" ? "active" : ""}`}
+            onClick={() => setActiveViewerTab("matchups")}
+          >
+            <i className="fas fa-swords me-2"></i> Matchups
+          </button>
+          <button
+            className={`form-tab ${activeViewerTab === "team" ? "active" : ""}`}
+            onClick={() => setActiveViewerTab("team")}
+          >
+            <i className="fas fa-users me-2"></i> Team Analysis
+          </button>
+        </div>
         <div className="viewer-layout">
           {/* Main Content */}
           <div>
-            {/* Matchups Section - Priority */}
-            {data.matchups.length > 0 && (
-              <div className="content-card-modern mb-4">
-                <div className="d-flex align-items-center justify-content-between mb-4">
-                  <h3 className="h4 mb-0">
-                    <i className="fas fa-swords me-2 text-accent-modern"></i>
-                    Matchup Details
-                  </h3>
-                  <span className="badge bg-success">
-                    Viewing: {data.matchups[selectedMatchup]?.title}
-                  </span>
-                </div>
-
-                {data.matchups[selectedMatchup] && (
-                  <div className="matchup-content" id={`matchup-${selectedMatchup}`}>
-                    <div className="d-flex align-items-center justify-content-between mb-3">
-                      <h4 className="mb-0">{data.matchups[selectedMatchup].title}</h4>
-                      {data.matchups[selectedMatchup].paste && (
-                        <a
-                          href={data.matchups[selectedMatchup].paste}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="btn btn-secondary-modern btn-sm"
-                        >
-                          <i className="fas fa-external-link-alt me-2"></i>
-                          Opponent Paste
-                        </a>
-                      )}
-                    </div>
-
-                    {data.matchups[selectedMatchup].gameplans.map((gameplan, gameplanIndex) => (
-                      <div key={gameplanIndex} className="border rounded p-3 mb-3">
-                        <h5 className="mb-3">
-                          <i className="fas fa-chess-pawn me-2"></i>
-                          Gameplan {gameplanIndex + 1}
-                        </h5>
-
-                        {gameplan.text && (
-                          <div className="mb-3">
-                            <h6 className="mb-2">
-                              <i className="fas fa-scroll me-2"></i>
-                              Strategy
-                            </h6>
-                            <div className="border rounded p-3">
-                              <ReactQuill
-                                value={gameplan.text}
-                                readOnly
-                                theme="bubble"
-                                modules={{ toolbar: false }}
-                              />
-                            </div>
-                          </div>
-                        )}
-
-                        <div className="mb-3">
-                          <h6 className="mb-2">
-                            <i className="fas fa-users me-2"></i>
-                            Team Composition
-                          </h6>
-                          <div className="d-flex flex-wrap gap-2">
-                            {gameplan.composition.map((comp, compIndex) => (
-                              comp.pokemon && (
-                                <span
-                                  key={compIndex}
-                                  className={`badge ${
-                                    comp.role === "Lead"
-                                      ? "bg-success"
-                                      : "bg-warning"
-                                  }`}
-                                  style={{ fontSize: "0.875rem", padding: "0.5rem" }}
-                                >
-                                  {comp.pokemon} - {comp.role}
-                                </span>
-                              )
-                            ))}
-                          </div>
+            {activeViewerTab === 'matchups' && (
+              <>
+                {data.matchups.length > 0 && (
+                  <div className="content-card-modern mb-4">
+                    {data.matchups[selectedMatchup] && (
+                      <div className="matchup-content" id={`matchup-${selectedMatchup}`}>
+                        <div className="d-flex align-items-center justify-content-between mb-3">
+                          <h4 className="mb-0">{data.matchups[selectedMatchup].title}</h4>
+                          {data.matchups[selectedMatchup].paste && (
+                            <a
+                              href={data.matchups[selectedMatchup].paste}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="btn btn-secondary-modern btn-sm"
+                            >
+                              <i className="fas fa-external-link-alt me-2"></i>
+                              Opponent Paste
+                            </a>
+                          )}
                         </div>
 
-                        {gameplan.replays && gameplan.replays.length > 0 && (
-                          <div>
-                            <h6 className="mb-2">
-                              <i className="fas fa-play me-2"></i>
-                              Replay Links
-                            </h6>
-                            <div className="d-flex flex-wrap gap-2">
-                              {gameplan.replays.map((replay, index) => (
-                                <a
-                                  key={index}
-                                  href={replay}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="btn btn-secondary-modern btn-sm"
-                                >
-                                  <i className="fas fa-play me-1"></i>
-                                  Replay {index + 1}
-                                </a>
-                              ))}
+                        {data.matchups[selectedMatchup].gameplans.map((gameplan, gameplanIndex) => (
+                          <div key={gameplanIndex} className="border rounded p-3 mb-3">
+                            <h5 className="mb-3">
+                              <i className="fas fa-chess-pawn me-2"></i>
+                              Gameplan {gameplanIndex + 1}
+                            </h5>
+
+                            {gameplan.text && (
+                              <div className="mb-3">
+                                <h6 className="mb-2">
+                                  <i className="fas fa-scroll me-2"></i>
+                                  Strategy
+                                </h6>
+                                <div className="border rounded p-3">
+                                  <ReactQuill
+                                    value={gameplan.text}
+                                    readOnly
+                                    theme="bubble"
+                                    modules={{ toolbar: false }}
+                                  />
+                                </div>
+                              </div>
+                            )}
+
+                            <div className="mb-3">
+                              <h6 className="mb-2">
+                                <i className="fas fa-users me-2"></i>
+                                Team Composition
+                              </h6>
+                              <div className="d-flex flex-wrap gap-2">
+                                {gameplan.composition.map((comp, compIndex) => (
+                                  comp.pokemon && (
+                                    <span
+                                      key={compIndex}
+                                      className={`badge ${
+                                        comp.role === "Lead"
+                                          ? "bg-success"
+                                          : "bg-primary"
+                                      }`}
+                                      style={{ fontSize: "0.875rem", padding: "0.5rem" }}
+                                    >
+                                      {comp.pokemon} - {comp.role}
+                                    </span>
+                                  )
+                                ))}
+                              </div>
                             </div>
+
+                            {gameplan.replays && gameplan.replays.length > 0 && (
+                              <div>
+                                <h6 className="mb-2">
+                                  <i className="fas fa-play me-2"></i>
+                                  Replay Links
+                                </h6>
+                                <div className="d-flex flex-wrap gap-2">
+                                  {gameplan.replays.map((replay, index) => (
+                                    <a
+                                      key={index}
+                                      href={replay}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="btn btn-secondary-modern btn-sm"
+                                    >
+                                      <i className="fas fa-play me-1"></i>
+                                      Replay {index + 1}
+                                    </a>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
                           </div>
-                        )}
+                        ))}
                       </div>
-                    ))}
+                    )}
                   </div>
+                )}
+              </>
+            )}
+            {activeViewerTab === 'team' && (
+              <div className="content-card-modern">
+                {data.team[selectedPokemon] && (
+                  <>
+                    <div className="d-flex align-items-center mb-3">
+                      {pokemonImages[selectedPokemon] ? (
+                        <ImageLoader
+                          src={pokemonImages[selectedPokemon]}
+                          alt={data.team[selectedPokemon].species}
+                          className="me-3"
+                          style={{
+                            width: "60px",
+                            height: "60px",
+                            objectFit: "contain",
+                          }}
+                        />
+                      ) : (
+                        <div className="me-3">
+                          <ImageLoader
+                            src=""
+                            alt=""
+                            style={{ width: "60px", height: "60px" }}
+                            showSkeleton={!loadingImages}
+                          />
+                        </div>
+                      )}
+                      <div>
+                        <h5 className="mb-1">
+                          {data.team[selectedPokemon].species}
+                        </h5>
+                        <small className="text-muted-modern">
+                          {(data.team[selectedPokemon].calcs[0]?.offensive
+                            ?.length || 0) +
+                            (data.team[selectedPokemon].calcs[0]?.defensive
+                              ?.length || 0)}{" "}
+                          calculation
+                          {(data.team[selectedPokemon].calcs[0]?.offensive
+                            ?.length || 0) +
+                            (data.team[selectedPokemon].calcs[0]?.defensive
+                              ?.length || 0) !==
+                          1
+                            ? "s"
+                            : ""}
+                        </small>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-6">
+                      <h6 className="text-success mb-2">
+                        <i className="fas fa-sword me-2"></i>
+                        Offensive Calculations
+                      </h6>
+                      {data.team[selectedPokemon].calcs[0]?.offensive?.length > 0 ? (
+                        <div className="row g-2">
+                          {data.team[selectedPokemon].calcs[0].offensive.map((calc, calcIndex) => (
+                            <div key={calcIndex} className="col-12">
+                              <pre className="calc-text mb-0">{calc}</pre>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-muted-modern">No offensive calculations.</p>
+                      )}
+                    </div>
+                    <div className="col-md-6">
+                      <h6 className="text-primary mb-2">
+                        <i className="fas fa-shield me-2"></i>
+                        Defensive Calculations
+                      </h6>
+                      {data.team[selectedPokemon].calcs[0]?.defensive?.length > 0 ? (
+                        <div className="row g-2">
+                          {data.team[selectedPokemon].calcs[0].defensive.map((calc, calcIndex) => (
+                            <div key={calcIndex} className="col-12">
+                              <pre className="calc-text mb-0">{calc}</pre>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-muted-modern">No defensive calculations.</p>
+                      )}
+                    </div>
+                  </div>
+                </>
                 )}
               </div>
             )}
+          </div>
 
-            {/* Team Section with Tabs */}
-            <div className="content-card-modern">
-              <div className="d-flex align-items-center justify-content-between mb-3">
-                <h3 className="h4 mb-0">
-                  <i className="fas fa-users me-2 text-accent-modern"></i>
-                  Team Analysis
-                </h3>
-                <span className="badge bg-primary">
-                  {data.team.length} Pokémon
-                </span>
-              </div>
-
-              {/* Pokemon Tabs */}
-              {data.team.length > 0 && (
+          {/* Sidebar */}
+          <div>
+            <div className="matchups-sidebar">
+              {activeViewerTab === 'matchups' && data.matchups.length > 0 && (
                 <>
-                  <div className="pokemon-tabs">
-                    {data.team.map((pokemon, index) => (
+                  <h5 className="mb-3">
+                    <i className="fas fa-list me-2"></i>
+                    Matchups Navigation
+                  </h5>
+                  <div className="matchups-nav">
+                    {data.matchups.map((matchup, index) => (
                       <div
                         key={index}
-                        className={`pokemon-tab ${selectedPokemon === index ? 'active' : ''}`}
-                        onClick={() => setSelectedPokemon(index)}
+                        className={`matchup-nav-item ${selectedMatchup === index ? 'active' : ''}`}
+                        onClick={() => setSelectedMatchup(index)}
                       >
-                        {pokemonImages[index] ? (
-                          <ImageLoader
-                            src={pokemonImages[index]}
-                            alt={pokemon.species}
-                            className="me-2"
-                            style={{
-                              width: "20px",
-                              height: "20px",
-                              objectFit: "contain",
-                              display: "inline-block"
-                            }}
-                          />
-                        ) : (
-                          <i className="fas fa-circle me-2"></i>
-                        )}
-                        {pokemon.species}
+                        <div className="flex-grow-1">
+                          <div className="fw-medium" style={{ fontSize: "0.875rem" }}>
+                            {matchup.title}
+                          </div>
+                          <small className="text-muted">
+                            {matchup.gameplans.length} gameplan{matchup.gameplans.length !== 1 ? 's' : ''}
+                          </small>
+                        </div>
+                        <span className="matchup-nav-badge">
+                          {matchup.gameplans.length}
+                        </span>
                       </div>
                     ))}
                   </div>
-
-                  {/* Selected Pokemon Details */}
-                  {data.team[selectedPokemon] && (
-                    <div className="border rounded p-3">
-                      <div className="d-flex align-items-center mb-3">
-                        {pokemonImages[selectedPokemon] ? (
-                          <ImageLoader
-                            src={pokemonImages[selectedPokemon]}
-                            alt={data.team[selectedPokemon].species}
-                            className="me-3"
-                            style={{
-                              width: "60px",
-                              height: "60px",
-                              objectFit: "contain"
-                            }}
-                          />
-                        ) : (
-                          <div className="me-3">
+                </>
+              )}
+              {activeViewerTab === 'team' && data.team.length > 0 && (
+                <>
+                  <h5 className="mb-3">
+                    <i className="fas fa-users me-2"></i>
+                    Team Navigation
+                  </h5>
+                  <div className="matchups-nav">
+                    {data.team.map((pokemon, index) => (
+                      <div
+                        key={index}
+                        className={`matchup-nav-item ${selectedPokemon === index ? 'active' : ''}`}
+                        onClick={() => setSelectedPokemon(index)}
+                      >
+                        <div className="d-flex align-items-center">
+                          {pokemonImages[index] ? (
                             <ImageLoader
-                              src=""
-                              alt=""
-                              style={{ width: "60px", height: "60px" }}
-                              showSkeleton={!loadingImages}
+                              src={pokemonImages[index]}
+                              alt={pokemon.species}
+                              className="me-2"
+                              style={{
+                                width: "20px",
+                                height: "20px",
+                                objectFit: "contain",
+                                display: "inline-block"
+                              }}
                             />
-                          </div>
-                        )}
-                        <div>
-                          <h5 className="mb-1">{data.team[selectedPokemon].species}</h5>
-                          <small className="text-muted-modern">
-                            {((data.team[selectedPokemon].calcs[0]?.offensive?.length || 0) + 
-                             (data.team[selectedPokemon].calcs[0]?.defensive?.length || 0))} calculation{
-                               ((data.team[selectedPokemon].calcs[0]?.offensive?.length || 0) + 
-                                (data.team[selectedPokemon].calcs[0]?.defensive?.length || 0)) !== 1 ? 's' : ''}
-                          </small>
+                          ) : (
+                            <i className="fas fa-circle me-2"></i>
+                          )}
+                          {pokemon.species}
                         </div>
                       </div>
-
-                      {/* Calculations */}
-                      {data.team[selectedPokemon].calcs[0]?.offensive && 
-                       data.team[selectedPokemon].calcs[0].offensive.length > 0 && (
-                        <div className="mb-3">
-                          <h6 className="text-success mb-2">
-                            <i className="fas fa-sword me-2"></i>
-                            Offensive Calculations
-                          </h6>
-                          <div className="row g-2">
-                            {data.team[selectedPokemon].calcs[0].offensive.map((calc, calcIndex) => (
-                              <div key={calcIndex} className="col-12">
-                                <pre className="calc-text mb-0">{calc}</pre>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {data.team[selectedPokemon].calcs[0]?.defensive && 
-                       data.team[selectedPokemon].calcs[0].defensive.length > 0 && (
-                        <div className="mb-3">
-                          <h6 className="text-primary mb-2">
-                            <i className="fas fa-shield me-2"></i>
-                            Defensive Calculations
-                          </h6>
-                          <div className="row g-2">
-                            {data.team[selectedPokemon].calcs[0].defensive.map((calc, calcIndex) => (
-                              <div key={calcIndex} className="col-12">
-                                <pre className="calc-text mb-0">{calc}</pre>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {(!data.team[selectedPokemon].calcs[0]?.offensive || 
-                        data.team[selectedPokemon].calcs[0].offensive.length === 0) &&
-                       (!data.team[selectedPokemon].calcs[0]?.defensive || 
-                        data.team[selectedPokemon].calcs[0].defensive.length === 0) && (
-                        <div className="text-center py-4">
-                          <i className="fas fa-calculator fa-2x text-muted mb-2"></i>
-                          <p className="text-muted-modern mb-0">
-                            No calculations available for {data.team[selectedPokemon].species}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  )}
+                    ))}
+                  </div>
                 </>
               )}
             </div>
           </div>
-
-          {/* Sidebar - Matchups Navigation */}
-          <div>
-            {data.matchups.length > 0 && (
-              <div className="matchups-sidebar">
-                <h5 className="mb-3">
-                  <i className="fas fa-list me-2"></i>
-                  Matchups Navigation
-                </h5>
-                
-                <div className="matchups-nav">
-                  {data.matchups.map((matchup, index) => (
-                    <div
-                      key={index}
-                      className={`matchup-nav-item ${selectedMatchup === index ? 'active' : ''}`}
-                      onClick={() => scrollToMatchup(index)}
-                    >
-                      <div className="flex-grow-1">
-                        <div className="fw-medium" style={{ fontSize: "0.875rem" }}>
-                          {matchup.title}
-                        </div>
-                        <small className="text-muted">
-                          {matchup.gameplans.length} gameplan{matchup.gameplans.length !== 1 ? 's' : ''}
-                        </small>
-                      </div>
-                      <span className="matchup-nav-badge">
-                        {matchup.gameplans.length}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-4 pt-3 border-top">
-                  <small className="text-muted-modern">
-                    <i className="fas fa-info-circle me-1"></i>
-                    Click on a matchup to view details
-                  </small>
-                </div>
-              </div>
-            )}
-          </div>
         </div>
+        {renderDocumentHeader()}
       </div>
 
       {/* Mobile Content */}
       <div className="d-block d-lg-none">
         {/* Matchups Tab Content */}
         {activeTab === "matchups" && data.matchups.length > 0 && (
-          <div className="content-card-modern">
+          <div className="content-card-modern p-0-mobile">
             <div className="row g-2">
               {data.matchups.map((matchup, matchupIndex) => {
                 const isExpanded = expandedMatchup === matchupIndex;
@@ -630,97 +618,91 @@ const StoredViewer = () => {
 
                       {isExpanded && (
                         <div className="matchup-mobile-compact-content">
-                          {matchup.gameplans.map((gameplan, gameplanIndex) => {
-                            const isGameplanExpanded = expandedGameplan[matchupIndex] === gameplanIndex;
-
-                            return (
-                              <div key={gameplanIndex} className="gameplan-compact">
-                                <div
-                                  className="d-flex align-items-center justify-content-between"
-                                  style={{ cursor: "pointer" }}
-                                  onClick={() =>
-                                    setExpandedGameplan({
-                                      ...expandedGameplan,
-                                      [matchupIndex]:
-                                        isGameplanExpanded ? null : gameplanIndex,
-                                    })
-                                  }
-                                >
+                          {matchup.gameplans.map(
+                            (gameplan, gameplanIndex) => (
+                              <div
+                                key={gameplanIndex}
+                                className="gameplan-compact-section"
+                              >
+                                <div className="d-flex align-items-center justify-content-between">
                                   <h6 className="mb-0">
                                     <i className="fas fa-chess-pawn me-2"></i>
                                     Gameplan {gameplanIndex + 1}
                                   </h6>
-                                  <div className="d-flex align-items-center">
-                                    {gameplan.replays && gameplan.replays.length > 0 && (
-                                      <span className="badge bg-info me-2">
-                                        {gameplan.replays.length}
+                                  {gameplan.replays &&
+                                    gameplan.replays.length > 0 && (
+                                      <span className="badge bg-info">
+                                        {gameplan.replays.length} replay
+                                        {gameplan.replays.length !== 1
+                                          ? "s"
+                                          : ""}
                                       </span>
                                     )}
-                                    <i className={`fas fa-chevron-${isGameplanExpanded ? 'up' : 'down'}`}></i>
-                                  </div>
                                 </div>
 
-                                {isGameplanExpanded && (
-                                  <div className="mt-3">
-                                    {gameplan.text && (
-                                      <div className="mb-3">
-                                        <h6 className="mb-2">Strategy</h6>
-                                        <div className="border rounded p-2">
-                                          <ReactQuill
-                                            value={gameplan.text}
-                                            readOnly
-                                            theme="bubble"
-                                            modules={{ toolbar: false }}
-                                          />
-                                        </div>
-                                      </div>
-                                    )}
-
+                                <div className="mt-3">
+                                  {gameplan.text && (
                                     <div className="mb-3">
-                                      <h6 className="mb-2">Composition</h6>
-                                      <div className="d-flex flex-wrap gap-1">
-                                        {gameplan.composition.map((comp, compIndex) => (
+                                      <h6 className="mb-2">Strategy</h6>
+                                      <div className="border rounded p-2">
+                                        <ReactQuill
+                                          value={gameplan.text}
+                                          readOnly
+                                          theme="bubble"
+                                          modules={{ toolbar: false }}
+                                        />
+                                      </div>
+                                    </div>
+                                  )}
+
+                                  <div className="mb-3">
+                                    <h6 className="mb-2">Composition</h6>
+                                    <div className="composition-grid">
+                                      {gameplan.composition.map(
+                                        (comp, compIndex) =>
                                           comp.pokemon && (
                                             <span
                                               key={compIndex}
                                               className={`badge ${
                                                 comp.role === "Lead"
                                                   ? "bg-success"
-                                                  : "bg-warning"
+                                                  : "bg-primary"
                                               }`}
                                               style={{ fontSize: "0.75rem" }}
                                             >
-                                              {comp.pokemon}
+                                              {comp.pokemon} - {comp.role}
                                             </span>
                                           )
-                                        ))}
-                                      </div>
+                                      )}
                                     </div>
+                                  </div>
 
-                                    {gameplan.replays && gameplan.replays.length > 0 && (
+                                  {gameplan.replays &&
+                                    gameplan.replays.length > 0 && (
                                       <div>
                                         <h6 className="mb-2">Replays</h6>
                                         <div className="d-flex flex-wrap gap-1">
-                                          {gameplan.replays.map((replay, index) => (
-                                            <a
-                                              key={index}
-                                              href={replay}
-                                              target="_blank"
-                                              rel="noopener noreferrer"
-                                              className="btn btn-secondary-modern btn-sm"
-                                            >
-                                              <i className="fas fa-play me-1"></i>
-                                              {index + 1}
-                                            </a>
-                                          ))}
+                                          {gameplan.replays.map(
+                                            (replay, index) => (
+                                              <a
+                                                key={index}
+                                                href={replay}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="btn btn-secondary-modern btn-sm"
+                                              >
+                                                <i className="fas fa-play me-1"></i>
+                                                {index + 1}
+                                              </a>
+                                            )
+                                          )}
                                         </div>
                                       </div>
                                     )}
-                                  </div>
-                                )}
+                                </div>
                               </div>
-                            );
-                          })}
+                            )
+                          )}
                         </div>
                       )}
                     </div>
@@ -733,7 +715,7 @@ const StoredViewer = () => {
 
         {/* Team Tab Content */}
         {activeTab === "team" && (
-          <div className="content-card-modern">
+          <div className="content-card-modern p-0-mobile">
             <div className="row g-3">
               {data.team.map((pokemon, index) => {
                 const isExpanded = expandedPokemon === index;
@@ -743,7 +725,7 @@ const StoredViewer = () => {
 
                 return (
                   <div key={index} className="col-12">
-                    <div className="border rounded p-3">
+                    <div className="border rounded p-3 pokemon-mobile-card">
                       <div
                         className="d-flex align-items-center justify-content-between"
                         style={{ cursor: "pointer" }}
@@ -849,6 +831,9 @@ const StoredViewer = () => {
           </div>
         )}
       </div>
+
+      {/* Document Header (Mobile) */}
+      <div className="d-block d-lg-none mt-4">{renderDocumentHeader()}</div>
     </div>
   );
 };
