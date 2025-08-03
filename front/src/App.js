@@ -12,16 +12,24 @@ import PrivacyPolicy from "./PrivacyPolicy";
 const Header = ({ isDarkMode, toggleDarkMode }) => {
   const navigate = useNavigate();
   const [isStoredData, setIsStoredData] = useState(false);
+  const [isMenuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const storedData = localStorage.getItem("storedData");
     setIsStoredData(!!storedData);
   }, []);
 
+  const toggleMenu = () => setMenuOpen(!isMenuOpen);
+
+  const handleNav = (path) => {
+    navigate(path);
+    setMenuOpen(false);
+  };
+
   return (
     <>
       {/* Desktop Header */}
-      <header className="header-modern d-none d-md-block">
+      <header className="header-modern d-none d-lg-block">
         <div className="container-modern">
           <div className="d-flex justify-content-between align-items-center">
             <div
@@ -39,10 +47,12 @@ const Header = ({ isDarkMode, toggleDarkMode }) => {
                 <i className="fas fa-folder-open me-2"></i>
                 View Local Doc
               </button>
-              <button 
-                onClick={toggleDarkMode} 
+              <button
+                onClick={toggleDarkMode}
                 className="btn btn-secondary-modern"
-                aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+                aria-label={
+                  isDarkMode ? "Switch to light mode" : "Switch to dark mode"
+                }
               >
                 {isDarkMode ? (
                   <i className="fas fa-sun"></i>
@@ -56,53 +66,59 @@ const Header = ({ isDarkMode, toggleDarkMode }) => {
       </header>
 
       {/* Mobile Header */}
-      <header className="header-mobile d-block d-md-none">
-        <div className="container-modern">
-          <div className="d-flex justify-content-center align-items-center">
-            <div
-              onClick={() => navigate("/")}
-              className="logo-mobile"
+      <header className="header-mobile d-lg-none">
+        <div className="container-modern h-100">
+          <div className="d-flex justify-content-between align-items-center h-100">
+            <button
+              onClick={toggleMenu}
+              className="mobile-header-btn"
+              aria-label="Open menu"
             >
+              <i className="fas fa-bars"></i>
+            </button>
+
+            <div onClick={() => handleNav("/")} className="logo-mobile">
               Matchups.net
             </div>
+
+            <button
+              onClick={toggleDarkMode}
+              className="mobile-header-btn"
+              aria-label={
+                isDarkMode ? "Switch to light mode" : "Switch to dark mode"
+              }
+            >
+              {isDarkMode ? (
+                <i className="fas fa-sun"></i>
+              ) : (
+                <i className="fas fa-moon"></i>
+              )}
+            </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile Bottom Navigation */}
-      <nav className="mobile-bottom-nav d-block d-md-none">
-        <div className="d-flex justify-content-around align-items-center h-100">
-          <button
-            onClick={() => navigate("/")}
-            className="mobile-nav-btn"
-            aria-label="Home"
-          >
-            <i className="fas fa-home"></i>
-            <span>Home</span>
+      {/* Burger Menu Dropdown */}
+      {isMenuOpen && (
+        <div className="burger-menu-dropdown d-lg-none">
+          <button onClick={() => handleNav("/")} className="burger-menu-item">
+            <i className="fas fa-home me-2"></i>Home
           </button>
           <button
-            onClick={() => navigate("/stored")}
-            className="mobile-nav-btn"
+            onClick={() => handleNav("/stored")}
+            className="burger-menu-item"
             disabled={!isStoredData}
-            aria-label="Local Document"
           >
-            <i className="fas fa-folder-open"></i>
-            <span>Local</span>
+            <i className="fas fa-folder-open me-2"></i>View Local Doc
           </button>
-          <button 
-            onClick={toggleDarkMode} 
-            className="mobile-nav-btn"
-            aria-label={isDarkMode ? 'Light mode' : 'Dark mode'}
+          <button
+            onClick={() => handleNav("/how-to-use")}
+            className="burger-menu-item"
           >
-            {isDarkMode ? (
-              <i className="fas fa-sun"></i>
-            ) : (
-              <i className="fas fa-moon"></i>
-            )}
-            <span>{isDarkMode ? 'Light' : 'Dark'}</span>
+            <i className="fas fa-question-circle me-2"></i>Guide
           </button>
         </div>
-      </nav>
+      )}
     </>
   );
 };

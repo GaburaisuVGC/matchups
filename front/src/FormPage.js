@@ -3,6 +3,10 @@ import TeamForm from "./TeamForm";
 import MatchupForm from "./MatchupForm";
 import initialData from "./utils/initialData";
 import CalcForm from "./CalcForm";
+import AddCalcForm from "./AddCalcForm";
+import AddMatchupForm from "./AddMatchupForm";
+import MatchupListMobile from "./MatchupListMobile";
+import MobileNavigation from "./MobileNavigation";
 import "./App.css";
 
 const FormPage = () => {
@@ -10,6 +14,7 @@ const FormPage = () => {
   const [teamSubmitted, setTeamSubmitted] = useState(false);
   const [activeFormTab, setActiveFormTab] = useState("team");
   const [selectedMatchup, setSelectedMatchup] = useState(0);
+  const [selectedPokemonIndex, setSelectedPokemonIndex] = useState(0);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [saveStatus, setSaveStatus] = useState("");
@@ -131,8 +136,14 @@ const FormPage = () => {
     e.target.value = "";
   };
 
+  const formTabs = [
+    { id: 'team', label: 'Team Setup', icon: 'fa-users', disabled: false },
+    { id: 'calcs', label: 'Calcs', icon: 'fa-calculator', disabled: !teamSubmitted },
+    { id: 'matchups', label: 'Matchups', icon: 'fa-gamepad', disabled: !teamSubmitted },
+  ];
+
   return (
-    <div className="fade-in">
+    <div className="fade-in form-page-container">
       {/* CTA How To Use */}
       <div className="cta-how-to-use-subtle text-center">
         <div className="d-flex align-items-center justify-content-center mb-3">
@@ -168,7 +179,7 @@ const FormPage = () => {
 
       <div className="homepage-desktop-layout">
         <div className="homepage-main-content">
-          <div className="form-tabs">
+          <div className="form-tabs d-none d-lg-flex">
             <button
               className={`form-tab ${activeFormTab === "team" ? "active" : ""}`}
               onClick={() => setActiveFormTab("team")}
@@ -182,7 +193,7 @@ const FormPage = () => {
               onClick={() => setActiveFormTab("calcs")}
               disabled={!teamSubmitted}
             >
-              <i className="fas fa-calculator me-2"></i> Calculations
+              <i className="fas fa-calculator me-2"></i> Calcs
             </button>
             <button
               className={`form-tab ${
@@ -208,23 +219,92 @@ const FormPage = () => {
               </div>
             )}
             {activeFormTab === "calcs" && teamSubmitted && (
-              <CalcForm data={data} setData={setData} />
+              <>
+                {/* Desktop View */}
+                <div className="d-none d-lg-block">
+                  <AddCalcForm data={data} setData={setData} />
+                  <CalcForm
+                    data={data}
+                    setData={setData}
+                    selectedPokemonIndex={selectedPokemonIndex}
+                  />
+                </div>
+                {/* Mobile View */}
+                <div className="d-lg-none">
+                  <CalcForm
+                    data={data}
+                    setData={setData}
+                    selectedPokemonIndex={selectedPokemonIndex}
+                  />
+                </div>
+              </>
             )}
             {activeFormTab === "matchups" && teamSubmitted && (
-              <MatchupForm
-                data={data}
-                setData={setData}
-                selectedMatchup={selectedMatchup}
-                setSelectedMatchup={setSelectedMatchup}
-              />
+              <>
+                {/* Desktop View */}
+                <div className="d-none d-lg-block">
+                  <AddMatchupForm data={data} setData={setData} />
+                  <MatchupForm
+                    data={data}
+                    setData={setData}
+                    selectedMatchup={selectedMatchup}
+                    setSelectedMatchup={setSelectedMatchup}
+                  />
+                </div>
+                {/* Mobile View */}
+                <div className="d-lg-none">
+                  <MatchupListMobile
+                    data={data}
+                    setData={setData}
+                    selectedMatchup={selectedMatchup}
+                    setSelectedMatchup={setSelectedMatchup}
+                  />
+                </div>
+              </>
             )}
           </div>
         </div>
         <div className="homepage-sidebar">
           <div className="homepage-sticky-actions">
+            {/* Calcs Navigation */}
+            {activeFormTab === 'calcs' && teamSubmitted && (
+              <div className="form-section-modern d-none d-lg-block">
+                <div className="matchups-sidebar">
+                  <h5 className="mb-3">
+                    <i className="fas fa-users me-2"></i>
+                    Your Team
+                  </h5>
+                  <div className="matchups-nav">
+                    {data.team.map((pokemon, index) => {
+                      const totalCalcs = (pokemon.calcs[0]?.offensive?.length || 0) + (pokemon.calcs[0]?.defensive?.length || 0);
+                      return (
+                        <div
+                          key={index}
+                          className={`matchup-nav-item ${selectedPokemonIndex === index ? "active" : ""}`}
+                          onClick={() => setSelectedPokemonIndex(index)}
+                        >
+                          <div className="flex-grow-1">
+                            <div className="fw-medium" style={{ fontSize: "0.875rem" }}>
+                              {pokemon.species}
+                            </div>
+                            <small className="text-muted">
+                              {totalCalcs} calc{totalCalcs !== 1 ? "s" : ""}
+                            </small>
+                          </div>
+                          <span className="matchup-nav-badge">
+                            {totalCalcs}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Matchup Navigation */}
             {activeFormTab === "matchups" && data.matchups.length > 0 && (
-              <div className="form-section-modern">
+              <div className="form-section-modern d-none d-lg-block">
                 <div className="matchups-sidebar">
                   <h5 className="mb-3">
                     <i className="fas fa-list me-2"></i>
@@ -385,6 +465,11 @@ const FormPage = () => {
           </div>
         </div>
       </div>
+      <MobileNavigation
+        tabs={formTabs}
+        activeTab={activeFormTab}
+        setActiveTab={setActiveFormTab}
+      />
     </div>
   );
 };

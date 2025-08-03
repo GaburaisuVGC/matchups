@@ -454,7 +454,7 @@ body.dark-mode {
 /* Layout desktop horizontal pour page d'accueil */
 .homepage-desktop-layout {
   display: grid;
-  gap: var(--spacing-xl);
+  gap: 0;
   grid-template-columns: 1fr;
 }
 
@@ -462,6 +462,7 @@ body.dark-mode {
   .homepage-desktop-layout {
     grid-template-columns: minmax(0, 2fr) 1fr;
     align-items: start;
+    gap: var(--spacing-xl);
   }
 }
 
@@ -638,7 +639,7 @@ body.dark-mode {
   color: var(--text-primary-dark);
 }
 
-/* Calculation tabs */
+/* Calc tabs */
 .calc-tabs {
   display: flex;
   gap: var(--spacing-sm);
@@ -1260,8 +1261,9 @@ body.dark-mode {
   padding: var(--spacing-md) 0;
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 1030;
   transition: all 0.2s ease;
+  height: var(--header-height);
 }
 
 .light-mode .header-mobile {
@@ -1551,4 +1553,195 @@ body.dark-mode {
   width: 40px;
   height: 40px;
   margin: 0 auto 0.5rem;
+}
+
+/* Accordion Styles for CalcForm */
+.accordion-item-modern {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-sm);
+  overflow: hidden; /* Ensures the child border-radius is respected */
+}
+
+.dark-mode .accordion-item-modern {
+  border: 1px solid var(--border-dark);
+}
+
+.accordion-header-modern {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  background-color: var(--bg-secondary-light);
+  transition: background-color 0.2s ease-in-out;
+}
+
+.accordion-header-modern .fw-medium {
+  font-size: 0.9rem;
+}
+
+.accordion-header-modern .badge {
+  font-size: 0.65rem;
+  padding: 0.25rem 0.4rem;
+}
+
+.dark-mode .accordion-header-modern {
+  background-color: var(--bg-secondary-dark);
+}
+
+.accordion-header-modern:hover {
+  background-color: var(--bg-tertiary-light);
+}
+
+.dark-mode .accordion-header-modern:hover {
+  background-color: var(--bg-tertiary-dark);
+}
+
+.accordion-body-modern {
+  padding: 1.25rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.dark-mode .accordion-body-modern {
+  border-top: 1px solid var(--border-dark);
+}
+
+/* Mobile Header adjustments */
+.mobile-header-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.light-mode .mobile-header-btn {
+  color: var(--text-secondary-light);
+}
+
+.dark-mode .mobile-header-btn {
+  color: var(--text-secondary-dark);
+}
+
+.mobile-header-btn:hover {
+  transform: translateY(-1px);
+}
+
+.light-mode .mobile-header-btn:hover {
+  color: var(--text-primary-light);
+}
+
+.dark-mode .mobile-header-btn:hover {
+  color: var(--text-primary-dark);
+}
+
+
+/* Burger Menu */
+.burger-menu-dropdown {
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+  border-bottom: 1px solid var(--border-dark);
+  z-index: 1029;
+  padding: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  box-shadow: var(--shadow-lg);
+  margin-bottom: -2px;
+}
+
+.light-mode .burger-menu-dropdown {
+  background-color: var(--bg-secondary-light);
+  border-bottom-color: var(--border-light);
+}
+
+.dark-mode .burger-menu-dropdown {
+  background-color: var(--bg-secondary-dark);
+}
+
+.burger-menu-item {
+  background: none;
+  border: none;
+  text-align: left;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  width: 100%;
+  transition: all 0.2s ease;
+}
+
+.light-mode .burger-menu-item {
+  color: var(--text-primary-light);
+}
+
+.dark-mode .burger-menu-item {
+  color: var(--text-primary-dark);
+}
+
+.burger-menu-item:hover:not(:disabled) {
+  transform: translateX(4px);
+}
+
+.light-mode .burger-menu-item:hover:not(:disabled) {
+  background: var(--bg-tertiary-light);
+}
+
+.dark-mode .burger-menu-item:hover:not(:disabled) {
+  background: var(--bg-tertiary-dark);
+}
+
+.burger-menu-item:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.burger-menu-item i {
+  width: 20px;
+  text-align: center;
+}
+
+/* New Mobile Bottom Nav */
+.new-mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  border-top: 1px solid;
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  transition: all 0.2s ease;
+}
+
+.light-mode .new-mobile-bottom-nav {
+  background: rgba(248, 250, 252, 0.95);
+  border-top-color: var(--border-light);
+}
+
+.dark-mode .new-mobile-bottom-nav {
+  background: rgba(15, 23, 42, 0.95);
+  border-top-color: var(--border-dark);
+}
+
+.new-mobile-bottom-nav .mobile-nav-btn.active {
+  transform: translateY(-2px);
+}
+
+.light-mode .new-mobile-bottom-nav .mobile-nav-btn.active {
+  color: var(--accent-primary-light);
+}
+
+.dark-mode .new-mobile-bottom-nav .mobile-nav-btn.active {
+  color: var(--accent-primary-dark);
+}
+
+
+/* Padding for content */
+@media (max-width: 991.98px) { /* Below lg breakpoint */
+  .form-page-container, .viewer-page-container {
+    padding-bottom: 70px; /* height of new nav */
+  }
 }

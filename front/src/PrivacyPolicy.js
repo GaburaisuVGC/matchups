@@ -81,7 +81,7 @@ const PrivacyPolicy = () => {
                         <li>Document content (when saved)</li>
                         <li>Team compositions</li>
                         <li>Matchup analyses</li>
-                        <li>Game calculations</li>
+                        <li>Game calcs</li>
                       </ul>
                     </div>
                   </div>

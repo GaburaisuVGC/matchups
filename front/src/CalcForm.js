@@ -1,273 +1,148 @@
 import React, { useState } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import AddCalcForm from "./AddCalcForm";
 
-const CalcForm = ({ data, setData }) => {
-  const [calcInput, setCalcInput] = useState("");
-  const [selectedPokemon, setSelectedPokemon] = useState(data.team[0]?.species || "");
-  const [calcType, setCalcType] = useState("offensive");
-  const [selectedPokemonTab, setSelectedPokemonTab] = useState(0);
-  const [activeCalcTab, setActiveCalcTab] = useState("offensive");
-
-  const addCalc = () => {
-    if (!selectedPokemon || !calcInput.trim()) {
-      return;
-    }
-
-    const updatedTeam = data.team.map((pokemon) => {
-      if (pokemon.species === selectedPokemon) {
-        const updatedCalcs = {
-          ...pokemon.calcs[0],
-          [calcType]: [...(pokemon.calcs[0]?.[calcType] || []), calcInput.trim()],
-        };
-
-        return {
-          ...pokemon,
-          calcs: [updatedCalcs],
-        };
-      }
-      return pokemon;
-    });
-
-    setData((prevData) => ({
-      ...prevData,
-      team: updatedTeam,
-    }));
-    setCalcInput("");
-  };
+const CalcForm = ({ data, setData, selectedPokemonIndex }) => {
+  // State for mobile accordion
+  const [expandedPokemon, setExpandedPokemon] = useState(0);
 
   const handleCalcChange = (pokemonIndex, calcIndex, type, value) => {
     const updatedTeam = [...data.team];
     updatedTeam[pokemonIndex].calcs[0][type][calcIndex] = value;
-    setData((prevData) => ({
-      ...prevData,
-      team: updatedTeam,
-    }));
+    setData((prevData) => ({ ...prevData, team: updatedTeam }));
   };
 
   const handleCalcDelete = (pokemonIndex, calcIndex, type) => {
     const updatedTeam = [...data.team];
     updatedTeam[pokemonIndex].calcs[0][type].splice(calcIndex, 1);
-    setData((prevData) => ({
-      ...prevData,
-      team: updatedTeam,
-    }));
+    setData((prevData) => ({ ...prevData, team: updatedTeam }));
+  };
+
+  const toggleExpand = (index) => {
+    setExpandedPokemon(expandedPokemon === index ? null : index);
   };
 
   const teamExists = data.team.length > 0;
-  const hasAnyCalcs = data.team.some(pokemon => 
-    (pokemon.calcs[0]?.offensive && pokemon.calcs[0].offensive.length > 0) ||
-    (pokemon.calcs[0]?.defensive && pokemon.calcs[0].defensive.length > 0)
-  );
-  
-  const selectedPokemonForTab = data.team[selectedPokemonTab];
+  const selectedPokemonForDesktop = data.team[selectedPokemonIndex];
 
   return (
-    <div className="form-section-modern p-3 p-lg-4">
-      <h2 className="form-title-modern mb-4">
-        <i className="fas fa-calculator me-2 text-accent-modern"></i>
-        Damage Calculations
-      </h2>
+    <>
+      {/* Mobile View: Accordion */}
+      <div className="d-lg-none">
+        <AddCalcForm data={data} setData={setData} />
+        <div className="accordion" id="calcAccordionMobile">
+          {teamExists ? (
+            data.team.map((pokemon, index) => {
+              const isExpanded = expandedPokemon === index;
+              const hasOffensiveCalcs = pokemon.calcs[0]?.offensive?.length > 0;
+              const hasDefensiveCalcs = pokemon.calcs[0]?.defensive?.length > 0;
+              const totalCalcs = (pokemon.calcs[0]?.offensive?.length || 0) + (pokemon.calcs[0]?.defensive?.length || 0);
 
-      {/* Add Calculation Form */}
-      <div className="mb-4">
-        <h5 className="mb-3">
-          <i className="fas fa-plus me-2"></i>
-          Add New Calculation
-        </h5>
-        
-        <div className="row g-3">
-          <div className="col-md-4">
-            <label className="form-label-modern">
-              <i className="fas fa-user-circle me-2"></i>
-              Select Pokémon
-            </label>
-            <select
-              value={selectedPokemon}
-              onChange={(e) => setSelectedPokemon(e.target.value)}
-              className="form-control form-control-modern"
-              disabled={!teamExists}
-            >
-              <option value="">Choose a Pokémon...</option>
-              {data.team.map((pokemon, index) => (
-                <option key={index} value={pokemon.species}>
-                  {pokemon.species}
-                </option>
-              ))}
-            </select>
-          </div>
-          
-          <div className="col-md-3">
-            <label className="form-label-modern">
-              <i className="fas fa-crosshairs me-2"></i>
-              Calculation Type
-            </label>
-            <select
-              value={calcType}
-              onChange={(e) => setCalcType(e.target.value)}
-              className="form-control form-control-modern"
-              disabled={!teamExists}
-            >
-              <option value="offensive">Offensive</option>
-              <option value="defensive">Defensive</option>
-            </select>
-          </div>
-          
-          <div className="col-md-5">
-            <label className="form-label-modern">
-              <i className="fas fa-edit me-2"></i>
-              Calculation Details
-            </label>
-            <div className="input-group">
-              <textarea
-                value={calcInput}
-                onChange={(e) => setCalcInput(e.target.value)}
-                rows="1"
-                className="form-control form-control-modern"
-                placeholder="Enter damage calculation..."
-                disabled={!teamExists}
-                style={{ resize: "none", minHeight: "38px" }}
-              />
-              <button
-                onClick={addCalc}
-                className="btn btn-primary-modern"
-                disabled={!teamExists || !selectedPokemon || !calcInput.trim()}
-                style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
-              >
-                <i className="fas fa-plus"></i>
-              </button>
+              return (
+                <div key={index} className="accordion-item-modern">
+                  <h2 className="accordion-header-modern mb-0" onClick={() => toggleExpand(index)}>
+                    <div className="d-flex justify-content-between align-items-center w-100">
+                      <span className="fw-medium">{pokemon.species}</span>
+                      <div className="d-flex align-items-center">
+                        <span className="badge bg-primary me-3">{totalCalcs} calc{totalCalcs !== 1 ? 's' : ''}</span>
+                        <i className={`fas fa-chevron-${isExpanded ? 'up' : 'down'}`}></i>
+                      </div>
+                    </div>
+                  </h2>
+                  {isExpanded && (
+                    <div className="accordion-body-modern">
+                      {/* Offensive Calcs */}
+                      <h6 className="text-success mb-2"><i className="fas fa-khanda me-2"></i>Offensive</h6>
+                      {hasOffensiveCalcs ? (
+                        <div className="row g-2 mb-3">
+                          {pokemon.calcs[0].offensive.map((calc, calcIndex) => (
+                            <div key={calcIndex} className="col-12">
+                              <div className="input-group">
+                                <textarea value={calc} onChange={(e) => handleCalcChange(index, calcIndex, "offensive", e.target.value)} rows="2" className="form-control form-control-modern" style={{ resize: "none" }} />
+                                <button onClick={() => handleCalcDelete(index, calcIndex, "offensive")} className="btn btn-outline-danger" title="Delete calc"><i className="fas fa-trash"></i></button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : <p className="text-muted-modern small mb-3">No offensive calcs.</p>}
+                      {/* Defensive Calcs */}
+                      <h6 className="text-primary mb-2"><i className="fas fa-shield me-2"></i>Defensive</h6>
+                      {hasDefensiveCalcs ? (
+                        <div className="row g-2">
+                          {pokemon.calcs[0].defensive.map((calc, calcIndex) => (
+                            <div key={calcIndex} className="col-12">
+                              <div className="input-group">
+                                <textarea value={calc} onChange={(e) => handleCalcChange(index, calcIndex, "defensive", e.target.value)} rows="2" className="form-control form-control-modern" style={{ resize: "none" }} />
+                                <button onClick={() => handleCalcDelete(index, calcIndex, "defensive")} className="btn btn-outline-danger" title="Delete calc"><i className="fas fa-trash"></i></button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : <p className="text-muted-modern small">No defensive calcs.</p>}
+                    </div>
+                  )}
+                </div>
+              );
+            })
+          ) : (
+            <div className="text-center py-5">
+              <i className="fas fa-users fa-3x text-muted mb-3"></i>
+              <h6 className="text-muted-modern">No team submitted yet</h6>
             </div>
-          </div>
-        </div>
-
-        {!teamExists && (
-          <div className="alert alert-info mt-3 mb-0" role="alert">
-            <i className="fas fa-info-circle me-2"></i>
-            Please submit a team first to add calculations.
-          </div>
-        )}
-      </div>
-
-      {/* Calculations Display */}
-      <div>
-        <div className="d-flex align-items-center justify-content-between mb-3">
-          <h5 className="mb-0">
-            <i className="fas fa-list me-2"></i>
-            Team Calculations
-          </h5>
-          {hasAnyCalcs && (
-            <span className="badge bg-success">
-              {data.team.reduce((total, pokemon) => 
-                total + (pokemon.calcs[0]?.offensive?.length || 0) + (pokemon.calcs[0]?.defensive?.length || 0), 0
-              )} total
-            </span>
           )}
         </div>
+      </div>
 
-        {teamExists ? (
-          <>
-            <div className="pokemon-tabs">
-              {data.team.map((pokemon, index) => (
-                <div
-                  key={index}
-                  className={`pokemon-tab ${selectedPokemonTab === index ? 'active' : ''}`}
-                  onClick={() => setSelectedPokemonTab(index)}
-                >
-                  {pokemon.species}
-                </div>
-              ))}
-            </div>
-            
-            {selectedPokemonForTab && (
-              <div className="border rounded p-3">
-                <div className="calc-tabs">
-                  <div
-                    className={`calc-tab ${activeCalcTab === 'offensive' ? 'active' : ''}`}
-                    onClick={() => setActiveCalcTab('offensive')}
-                  >
-                    <i className="fas fa-khanda me-2"></i>&nbsp;Offensive
-                  </div>
-                  <div
-                    className={`calc-tab ${activeCalcTab === 'defensive' ? 'active' : ''}`}
-                    onClick={() => setActiveCalcTab('defensive')}
-                  >
-                    <i className="fas fa-shield me-2"></i>&nbsp;Defensive
-                  </div>
-                </div>
-
-                <div className="calc-content">
-                  {activeCalcTab === 'offensive' && (
-                    <div>
-                      {selectedPokemonForTab.calcs[0]?.offensive?.length > 0 ? (
-                        <div className="row g-2">
-                          {selectedPokemonForTab.calcs[0].offensive.map((calc, calcIndex) => (
-                            <div key={calcIndex} className="col-12">
-                              <div className="input-group">
-                                <textarea
-                                  value={calc}
-                                  onChange={(e) => handleCalcChange(selectedPokemonTab, calcIndex, "offensive", e.target.value)}
-                                  rows="2"
-                                  className="form-control form-control-modern"
-                                  style={{ resize: "none" }}
-                                />
-                                <button
-                                  onClick={() => handleCalcDelete(selectedPokemonTab, calcIndex, "offensive")}
-                                  className="btn btn-outline-danger"
-                                  title="Delete calculation"
-                                >
-                                  <i className="fas fa-trash"></i>
-                                </button>
-                              </div>
-                            </div>
-                          ))}
+      {/* Desktop View: Editing Area */}
+      <div className="d-none d-lg-block">
+        {teamExists && selectedPokemonForDesktop ? (
+          <div className="form-section-modern p-3 p-lg-4">
+            <h2 className="form-title-modern mb-4">
+              <i className="fas fa-edit me-2 text-accent-modern"></i>
+              Editing Calcs for {selectedPokemonForDesktop.species}
+            </h2>
+            <div className="row">
+              <div className="col-md-6">
+                <h6 className="text-success mb-2"><i className="fas fa-khanda me-2"></i>Offensive</h6>
+                {(selectedPokemonForDesktop.calcs[0]?.offensive?.length > 0) ? (
+                  <div className="row g-2">
+                    {selectedPokemonForDesktop.calcs[0].offensive.map((calc, calcIndex) => (
+                      <div key={calcIndex} className="col-12">
+                        <div className="input-group">
+                          <textarea value={calc} onChange={(e) => handleCalcChange(selectedPokemonIndex, calcIndex, "offensive", e.target.value)} rows="2" className="form-control form-control-modern" style={{ resize: "none" }} />
+                          <button onClick={() => handleCalcDelete(selectedPokemonIndex, calcIndex, "offensive")} className="btn btn-outline-danger" title="Delete calc"><i className="fas fa-trash"></i></button>
                         </div>
-                      ) : (
-                        <p className="text-muted-modern">No offensive calculations.</p>
-                      )}
-                    </div>
-                  )}
-                  {activeCalcTab === 'defensive' && (
-                    <div>
-                      {selectedPokemonForTab.calcs[0]?.defensive?.length > 0 ? (
-                        <div className="row g-2">
-                          {selectedPokemonForTab.calcs[0].defensive.map((calc, calcIndex) => (
-                            <div key={calcIndex} className="col-12">
-                              <div className="input-group">
-                                <textarea
-                                  value={calc}
-                                  onChange={(e) => handleCalcChange(selectedPokemonTab, calcIndex, "defensive", e.target.value)}
-                                  rows="2"
-                                  className="form-control form-control-modern"
-                                  style={{ resize: "none" }}
-                                />
-                                <button
-                                  onClick={() => handleCalcDelete(selectedPokemonTab, calcIndex, "defensive")}
-                                  className="btn btn-outline-danger"
-                                  title="Delete calculation"
-                                >
-                                  <i className="fas fa-trash"></i>
-                                </button>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="text-muted-modern">No defensive calculations.</p>
-                      )}
-                    </div>
-                  )}
-                </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : <p className="text-muted-modern">No offensive calcs.</p>}
               </div>
-            )}
-          </>
+              <div className="col-md-6">
+                <h6 className="text-primary mb-2"><i className="fas fa-shield me-2"></i>Defensive</h6>
+                {(selectedPokemonForDesktop.calcs[0]?.defensive?.length > 0) ? (
+                  <div className="row g-2">
+                    {selectedPokemonForDesktop.calcs[0].defensive.map((calc, calcIndex) => (
+                      <div key={calcIndex} className="col-12">
+                        <div className="input-group">
+                          <textarea value={calc} onChange={(e) => handleCalcChange(selectedPokemonIndex, calcIndex, "defensive", e.target.value)} rows="2" className="form-control form-control-modern" style={{ resize: "none" }} />
+                          <button onClick={() => handleCalcDelete(selectedPokemonIndex, calcIndex, "defensive")} className="btn btn-outline-danger" title="Delete calc"><i className="fas fa-trash"></i></button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : <p className="text-muted-modern">No defensive calcs.</p>}
+              </div>
+            </div>
+          </div>
         ) : (
           <div className="text-center py-5">
             <i className="fas fa-users fa-3x text-muted mb-3"></i>
             <h6 className="text-muted-modern">No team submitted yet</h6>
-            <p className="text-muted-modern mb-0">Submit your team first to start adding calculations</p>
+            <p className="text-muted-modern mb-0">Submit your team first to start adding calcs</p>
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

@@ -6,6 +6,8 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import ImageLoader from "./ImageLoader";
+import MobileNavigation from "./MobileNavigation";
+import TeamPreview from "./TeamPreview";
 
 const JsonViewer = () => {
   const { id } = useParams();
@@ -144,7 +146,7 @@ const JsonViewer = () => {
   }
 
   const renderDocumentHeader = () => (
-    <div className="content-card-modern mb-4">
+    <div className="content-card-modern mt-4 mb-4">
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
         <div className="flex-grow-1">
           <h1 className="h3 mb-2">{pageTitle}</h1>
@@ -189,84 +191,19 @@ const JsonViewer = () => {
           </button>
         </div>
       </div>
-
-      {/* Team Preview Images */}
-      {(pokemonImages.length > 0 || loadingImages) && (
-        <div className="mt-4 pt-3 border-top">
-          <h5 className="mb-3">
-            <i className="fas fa-images me-2"></i>
-            Team Preview
-          </h5>
-          <div className="row g-3">
-            {loadingImages
-              ? Array.from({ length: data.team.length }).map((_, index) => (
-                  <div key={index} className="col-6 col-md-4 col-lg-2">
-                    <div className="text-center">
-                      <ImageLoader
-                        src=""
-                        alt=""
-                        className="border-0"
-                        style={{ width: "80px", height: "80px" }}
-                        showSkeleton={true}
-                      />
-                      <div className="text-muted-modern mt-1">
-                        <small>#{index + 1}</small>
-                      </div>
-                    </div>
-                  </div>
-                ))
-              : pokemonImages.map((src, index) => (
-                  <div key={index} className="col-6 col-md-4 col-lg-2">
-                    <div className="text-center">
-                      <ImageLoader
-                        src={src}
-                        alt={`Pokémon ${index + 1}`}
-                        className="img-thumbnail"
-                        style={{
-                          width: "80px",
-                          height: "80px",
-                          objectFit: "contain",
-                          background: "transparent",
-                        }}
-                      />
-                      <div className="text-muted-modern mt-1">
-                        <small>#{index + 1}</small>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 
-  return (
-    <div className="fade-in">
-      {/* Mobile Tabs */}
-      <div className="d-block d-lg-none mb-4">
-        <div className="viewer-tabs">
-          <span
-            className={`viewer-tab ${activeTab === "matchups" ? "active" : ""}`}
-            onClick={() => setActiveTab("matchups")}
-          >
-            <i className="fas fa-gamepad me-2"></i>
-            Matchups ({data.matchups.length})
-          </span>
-          <span
-            className={`viewer-tab ${activeTab === "team" ? "active" : ""}`}
-            onClick={() => setActiveTab("team")}
-          >
-            <i className="fas fa-users me-2"></i>
-            Team ({data.team.length})
-          </span>
-        </div>
-      </div>
+  const viewerTabs = [
+    { id: 'matchups', label: 'Matchups', icon: 'fa-gamepad', disabled: data.matchups.length === 0 },
+    { id: 'team', label: 'Team', icon: 'fa-users', disabled: false }
+  ];
 
+  return (
+    <div className="fade-in viewer-page-container">
       {/* Main Layout: Desktop */}
       <div className="d-none d-lg-block mb-4">
-        {renderDocumentHeader()}
-        <div className="form-tabs">
+        <div className="form-tabs d-none d-lg-flex">
           <button
             className={`form-tab ${activeViewerTab === "matchups" ? "active" : ""}`}
             onClick={() => setActiveViewerTab("matchups")}
@@ -417,7 +354,7 @@ const JsonViewer = () => {
                             ?.length || 0) +
                             (data.team[selectedPokemon].calcs[0]?.defensive
                               ?.length || 0)}{" "}
-                          calculation
+                          calc
                           {(data.team[selectedPokemon].calcs[0]?.offensive
                             ?.length || 0) +
                             (data.team[selectedPokemon].calcs[0]?.defensive
@@ -432,7 +369,7 @@ const JsonViewer = () => {
                       <div className="col-md-6">
                       <h6 className="text-success mb-2">
                         <i className="fas fa-khanda me-2"></i>
-                        Offensive Calculations
+                        Offensive Calcs
                       </h6>
                       {data.team[selectedPokemon].calcs[0]?.offensive?.length > 0 ? (
                         <div className="row g-2">
@@ -443,13 +380,13 @@ const JsonViewer = () => {
                           ))}
                         </div>
                       ) : (
-                        <p className="text-muted-modern">No offensive calculations.</p>
+                        <p className="text-muted-modern">No offensive calcs.</p>
                       )}
                     </div>
                     <div className="col-md-6">
                       <h6 className="text-primary mb-2">
                         <i className="fas fa-shield me-2"></i>
-                        Defensive Calculations
+                        Defensive Calcs
                       </h6>
                       {data.team[selectedPokemon].calcs[0]?.defensive?.length > 0 ? (
                         <div className="row g-2">
@@ -460,7 +397,7 @@ const JsonViewer = () => {
                           ))}
                         </div>
                       ) : (
-                        <p className="text-muted-modern">No defensive calculations.</p>
+                        <p className="text-muted-modern">No defensive calcs.</p>
                       )}
                     </div>
                   </div>
@@ -473,6 +410,9 @@ const JsonViewer = () => {
           {/* Sidebar */}
           <div>
             <div className="matchups-sidebar">
+              <div className="d-none d-lg-block">
+                <TeamPreview pokemonImages={pokemonImages} loadingImages={loadingImages} teamLength={data.team.length} />
+              </div>
               {activeViewerTab === 'matchups' && data.matchups.length > 0 && (
                 <>
                   <h5 className="mb-3">
@@ -541,13 +481,15 @@ const JsonViewer = () => {
             </div>
           </div>
         </div>
+        {renderDocumentHeader()}
       </div>
 
       {/* Mobile Content */}
       <div className="d-block d-lg-none">
+        <TeamPreview pokemonImages={pokemonImages} loadingImages={loadingImages} teamLength={data.team.length} />
         {/* Matchups Tab Content */}
         {activeTab === "matchups" && data.matchups.length > 0 && (
-          <div className="content-card-modern p-0-mobile">
+          <div className="p-0-mobile">
             <div className="row g-2">
               {data.matchups.map((matchup, matchupIndex) => {
                 const isExpanded = expandedMatchup === matchupIndex;
@@ -611,7 +553,7 @@ const JsonViewer = () => {
 
                                 <div className="mt-3">
                                   {gameplan.text && (
-                                    <div className="mb-3">
+                                    <div className="mb-2">
                                       <h6 className="mb-2">Strategy</h6>
                                       <div className="border rounded p-2">
                                         <ReactQuill
@@ -624,7 +566,7 @@ const JsonViewer = () => {
                                     </div>
                                   )}
 
-                                  <div className="mb-3">
+                                  <div className="mb-2">
                                     <h6 className="mb-2">Composition</h6>
                                     <div className="composition-grid">
                                       {gameplan.composition.map(
@@ -684,7 +626,7 @@ const JsonViewer = () => {
 
         {/* Team Tab Content */}
         {activeTab === "team" && (
-          <div className="content-card-modern p-0-mobile">
+          <div className="p-0-mobile">
             <div className="row g-3">
               {data.team.map((pokemon, index) => {
                 const isExpanded = expandedPokemon === index;
@@ -694,7 +636,7 @@ const JsonViewer = () => {
 
                 return (
                   <div key={index} className="col-12">
-                    <div className="border rounded p-3 pokemon-mobile-card">
+                    <div className="border rounded p-2 pokemon-mobile-card">
                       <div
                         className="d-flex align-items-center justify-content-between"
                         style={{ cursor: "pointer" }}
@@ -744,7 +686,7 @@ const JsonViewer = () => {
                       {isExpanded && (
                         <div className="mt-3 pt-3 border-top">
                           {hasOffensiveCalcs && (
-                            <div className="mb-3">
+                            <div className="mb-2">
                               <h6 className="text-success mb-2">
                                 <i className="fas fa-khanda me-2"></i>
                                 Offensive
@@ -760,7 +702,7 @@ const JsonViewer = () => {
                           )}
 
                           {hasDefensiveCalcs && (
-                            <div className="mb-3">
+                            <div className="mb-2">
                               <h6 className="text-primary mb-2">
                                 <i className="fas fa-shield me-2"></i>
                                 Defensive
@@ -778,7 +720,7 @@ const JsonViewer = () => {
                           {!hasAnyCalcs && (
                             <div className="text-center py-3">
                               <i className="fas fa-calculator fa-lg text-muted mb-2"></i>
-                              <p className="text-muted-modern mb-0 small">No calculations for {pokemon.species}</p>
+                              <p className="text-muted-modern mb-0 small">No calcs for {pokemon.species}</p>
                             </div>
                           )}
                         </div>
@@ -802,7 +744,12 @@ const JsonViewer = () => {
       </div>
 
       {/* Document Header (Mobile) */}
-      <div className="d-block d-lg-none mt-4">{renderDocumentHeader()}</div>
+      <div className="mt-4">{renderDocumentHeader()}</div>
+      <MobileNavigation
+        tabs={viewerTabs}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
     </div>
   );
 };

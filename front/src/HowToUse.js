@@ -250,11 +250,11 @@ Adamant Nature
               <div className="flex-grow-1">
                 <h3 className="h4 mb-3">
                   <i className="fas fa-calculator me-2 text-accent-modern"></i>
-                  Damage Calculations
+                  Damage Calcs
                 </h3>
                 <p className="mb-3">
                   Each Pokémon on your team can contain both offensive and
-                  defensive calculations. You can also add small notes, such as
+                  defensive calcs. You can also add small notes, such as
                   what your Pokémon outspeeds.
                 </p>
 
@@ -263,7 +263,7 @@ Adamant Nature
                     <div className="border rounded p-3">
                       <h6 className="text-success mb-2">
                         <i className="fas fa-sword me-2"></i>
-                        Offensive Calculations
+                        Offensive Calcs
                       </h6>
                       <ul className="small mb-0">
                         <li>Damage output against common threats</li>
@@ -276,7 +276,7 @@ Adamant Nature
                     <div className="border rounded p-3">
                       <h6 className="text-primary mb-2">
                         <i className="fas fa-shield me-2"></i>
-                        Defensive Calculations
+                        Defensive Calcs
                       </h6>
                       <ul className="small mb-0">
                         <li>Damage taken from common attacks</li>
