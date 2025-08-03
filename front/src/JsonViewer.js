@@ -483,7 +483,6 @@ const JsonViewer = () => {
             </div>
           </div>
         </div>
-        {renderDocumentHeader()}
       </div>
 
       {/* Mobile Content */}
