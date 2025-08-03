@@ -19,31 +19,101 @@ const Header = ({ isDarkMode, toggleDarkMode }) => {
   }, []);
 
   return (
-    <header className="d-flex justify-content-between align-items-center p-3">
-      <div
-        onClick={() => navigate("/")}
-        style={{ cursor: "pointer", fontSize: "1.5rem", fontWeight: "600", fontFamily: "Raleway, sans-serif"}}
-        className={isDarkMode ? "text-white" : "text-dark"}
-      >
-        Matchups.net
-      </div>
-      <div className="d-flex">
-        <button
-          onClick={() => navigate("/stored")}
-          className="btn btn-primary me-2"
-          disabled={!isStoredData}
-        >
-          View Local Doc
-        </button>
-        <button onClick={toggleDarkMode} className="btn btn-secondary">
-          {isDarkMode ? "💡" : "🌙"}
-        </button>
-      </div>
-    </header>
+    <>
+      {/* Desktop Header */}
+      <header className="header-modern d-none d-md-block">
+        <div className="container-modern">
+          <div className="d-flex justify-content-between align-items-center">
+            <div
+              onClick={() => navigate("/")}
+              className="logo-modern"
+            >
+              Matchups.net
+            </div>
+            <div className="btn-group-modern">
+              <button
+                onClick={() => navigate("/stored")}
+                className="btn btn-secondary-modern"
+                disabled={!isStoredData}
+                style={{ 
+                  opacity: !isStoredData ? 0.5 : 1,
+                  cursor: !isStoredData ? 'not-allowed' : 'pointer'
+                }}
+              >
+                <i className="fas fa-folder-open me-2"></i>
+                View Local Doc
+              </button>
+              <button 
+                onClick={toggleDarkMode} 
+                className="btn btn-secondary-modern"
+                aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                {isDarkMode ? (
+                  <i className="fas fa-sun"></i>
+                ) : (
+                  <i className="fas fa-moon"></i>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile Header */}
+      <header className="header-mobile d-block d-md-none">
+        <div className="container-modern">
+          <div className="d-flex justify-content-center align-items-center">
+            <div
+              onClick={() => navigate("/")}
+              className="logo-mobile"
+            >
+              Matchups.net
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile Bottom Navigation */}
+      <nav className="mobile-bottom-nav d-block d-md-none">
+        <div className="d-flex justify-content-around align-items-center h-100">
+          <button
+            onClick={() => navigate("/")}
+            className="mobile-nav-btn"
+            aria-label="Home"
+          >
+            <i className="fas fa-home"></i>
+            <span>Home</span>
+          </button>
+          <button
+            onClick={() => navigate("/stored")}
+            className="mobile-nav-btn"
+            disabled={!isStoredData}
+            style={{ 
+              opacity: !isStoredData ? 0.5 : 1,
+              cursor: !isStoredData ? 'not-allowed' : 'pointer'
+            }}
+            aria-label="Local Document"
+          >
+            <i className="fas fa-folder-open"></i>
+            <span>Local</span>
+          </button>
+          <button 
+            onClick={toggleDarkMode} 
+            className="mobile-nav-btn"
+            aria-label={isDarkMode ? 'Light mode' : 'Dark mode'}
+          >
+            {isDarkMode ? (
+              <i className="fas fa-sun"></i>
+            ) : (
+              <i className="fas fa-moon"></i>
+            )}
+            <span>{isDarkMode ? 'Light' : 'Dark'}</span>
+          </button>
+        </div>
+      </nav>
+    </>
   );
 };
-
-
 
 const App = () => {
   const [data, setData] = useState(initialData);
@@ -66,56 +136,117 @@ const App = () => {
 
   return (
     <div
-      className={isDarkMode ? "dark-mode" : "light-mode"}
-      style={{ minHeight: "100vh", fontFamily: "Raleway, sans-serif", display: "flex", flexDirection: "column"}}
+      className={`${isDarkMode ? "dark-mode" : "light-mode"} fade-in`}
+      style={{ 
+        minHeight: "100vh", 
+        fontFamily: "'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif", 
+        display: "flex", 
+        flexDirection: "column"
+      }}
     >
       <Router>
         <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
         <CookieConsent />
-        <div className="container-fluid flex-grow-1">
-          <Routes>
-            <Route path="/" element={<FormPage data={data} setData={setData} />} />
-            <Route path="/how-to-use" element={<HowToUse />} />
-            <Route path="/stored" element={<StoredViewer />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/:id" element={<JsonViewer />} />
-          </Routes>
+        <div className="container-fluid flex-grow-1" style={{ padding: 0 }}>
+          <div className="container-modern main-content">
+            <Routes>
+              <Route path="/" element={<FormPage data={data} setData={setData} />} />
+              <Route path="/how-to-use" element={<HowToUse />} />
+              <Route path="/stored" element={<StoredViewer />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/:id" element={<JsonViewer />} />
+            </Routes>
+          </div>
         </div>
       </Router>
-      <footer
-        className={`text-center py-3 mt-4 ${isDarkMode ? "bg-dark text-white" : "bg-light text-dark"}`}
-        style={{ marginTop: "auto" }}
-      >
-        <p>
-          <a
-            href="https://matthieu-barbe.dev/"
-            className={`text-decoration-none ${isDarkMode ? "text-white" : "text-dark"}`}
-          >
-            Project by Matthieu Barbe
-          </a>{" "}
-          |{" "}
-          <a
-            href="/how-to-use"
-            className={`text-decoration-none ${isDarkMode ? "text-white" : "text-dark"}`}
-          >
-            How to use it?
-          </a>{" "}
-          |{" "}
-          <a
-            href="/privacy-policy"
-            className={`text-decoration-none ${isDarkMode ? "text-white" : "text-dark"}`}
-          >
-            Privacy Policy
-          </a>
-        </p>
-        <p className={`text-small ${isDarkMode ? "text-white" : "text-dark"}`}>
-          <a
-            href="https://github.com/GaburaisuVGC/matchups"
-            className={`text-decoration-none ${isDarkMode ? "text-white" : "text-dark"}`}
-          >
-            v1.7.2
-          </a>
-        </p>
+      <footer className="footer-modern">
+        <div className="container-modern">
+          {/* Desktop Footer */}
+          <div className="d-none d-md-block">
+            <div className="row align-items-center">
+              <div className="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                <p className="mb-0">
+                  <a
+                    href="https://matthieu-barbe.dev/"
+                    className="text-decoration-none me-3"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <i className="fas fa-user me-1"></i>
+                    Project by Matthieu Barbe
+                  </a>
+                  <a
+                    href="/how-to-use"
+                    className="text-decoration-none me-3"
+                  >
+                    <i className="fas fa-question-circle me-1"></i>
+                    How to use it?
+                  </a>
+                  <a
+                    href="/privacy-policy"
+                    className="text-decoration-none"
+                  >
+                    <i className="fas fa-shield-alt me-1"></i>
+                    Privacy Policy
+                  </a>
+                </p>
+              </div>
+              <div className="col-md-6 text-center text-md-end">
+                <p className="mb-0 text-muted-modern">
+                  <a
+                    href="https://github.com/GaburaisuVGC/matchups"
+                    className="text-decoration-none"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <i className="fab fa-github me-1"></i>
+                    v1.7.2
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Footer */}
+          <div className="d-block d-md-none text-center">
+            <div className="mb-3">
+              <a
+                href="https://matthieu-barbe.dev/"
+                className="text-decoration-none d-block mb-2"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i className="fas fa-user me-2"></i>
+                Project by Matthieu Barbe
+              </a>
+              <div className="d-flex justify-content-center gap-3">
+                <a
+                  href="/how-to-use"
+                  className="text-decoration-none"
+                >
+                  <i className="fas fa-question-circle me-1"></i>
+                  Guide
+                </a>
+                <a
+                  href="/privacy-policy"
+                  className="text-decoration-none"
+                >
+                  <i className="fas fa-shield-alt me-1"></i>
+                  Privacy
+                </a>
+                <a
+                  href="https://github.com/GaburaisuVGC/matchups"
+                  className="text-decoration-none"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i className="fab fa-github me-1"></i>
+                  v1.7.2
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </footer>
     </div>
   );

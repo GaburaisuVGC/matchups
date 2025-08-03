@@ -4,7 +4,13 @@ import './CookieConsent.css';
 
 const CookieConsent = () => {
   const [showPopup, setShowPopup] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    const darkMode = localStorage.getItem("darkMode") === "true";
+    setIsDarkMode(darkMode);
+  }, []);
 
   useEffect(() => {
     const consent = localStorage.getItem('cookieConsent');
@@ -24,14 +30,33 @@ const CookieConsent = () => {
 
   return (
     showPopup && (
-      <div className="cookie-consent-popup">
-        <div className="cookie-consent-content">
-          <p style={{ color: 'black' }}>
-            We use cookies to improve your experience and to make you be able to store your document locally. By using our site, you consent to cookies.
-          </p>
-          <div className="cookie-consent-actions">
-            <button onClick={acceptCookies} className="btn btn-primary me-2">Accept</button>
-            <a href="/privacy-policy" className="btn btn-link">Privacy Policy</a>
+      <div className="cookie-consent-overlay">
+        <div className="cookie-consent-popup">
+          <div className={`cookie-consent-content ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+            <div className="cookie-consent-header">
+              <i className="fas fa-cookie-bite text-accent me-2"></i>
+              <h5 className="mb-0">Cookie Notice</h5>
+            </div>
+            <p className="cookie-consent-text">
+              We use cookies to enhance your experience and enable local document storage. 
+              By using our site, you agree to our cookie usage.
+            </p>
+            <div className="cookie-consent-actions">
+              <button 
+                onClick={acceptCookies} 
+                className="btn btn-primary-modern"
+              >
+                <i className="fas fa-check me-2"></i>
+                Accept Cookies
+              </button>
+              <a 
+                href="/privacy-policy" 
+                className="btn btn-secondary-modern"
+              >
+                <i className="fas fa-info-circle me-2"></i>
+                Privacy Policy
+              </a>
+            </div>
           </div>
         </div>
       </div>
