@@ -268,7 +268,6 @@ Adamant Nature
                       <ul className="small mb-0">
                         <li>Damage output against common threats</li>
                         <li>KO ranges and percentages</li>
-                        <li>After item/ability boosts</li>
                       </ul>
                     </div>
                   </div>
@@ -281,7 +280,6 @@ Adamant Nature
                       <ul className="small mb-0">
                         <li>Damage taken from common attacks</li>
                         <li>Survival thresholds</li>
-                        <li>Speed comparisons</li>
                       </ul>
                     </div>
                   </div>

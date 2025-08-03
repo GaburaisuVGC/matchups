@@ -67,7 +67,7 @@ const PrivacyPolicy = () => {
                         <li>Personal information</li>
                         <li>User accounts or profiles</li>
                         <li>Browsing behavior</li>
-                        <li>Contact details</li>
+                        <li>Locally stored documents</li>
                       </ul>
                     </div>
                   </div>
@@ -78,10 +78,7 @@ const PrivacyPolicy = () => {
                         What we DO store
                       </h6>
                       <ul className="small mb-0">
-                        <li>Document content (when saved)</li>
-                        <li>Team compositions</li>
-                        <li>Matchup analyses</li>
-                        <li>Game calcs</li>
+                        <li>Encrypted document content (when saved online)</li>
                       </ul>
                     </div>
                   </div>
@@ -167,49 +164,6 @@ const PrivacyPolicy = () => {
                       </p>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Local Storage Benefits */}
-          <div className="content-card-modern">
-            <div className="text-center mb-4">
-              <h3 className="h4 mb-3">
-                <i className="fas fa-laptop me-2 text-accent-modern"></i>
-                Why Choose Local Storage?
-              </h3>
-              <p className="text-muted-modern">
-                For maximum privacy and control over your data
-              </p>
-            </div>
-            
-            <div className="row g-3">
-              <div className="col-md-4">
-                <div className="text-center p-3 border rounded h-100">
-                  <i className="fas fa-lock fa-2x text-success mb-3"></i>
-                  <h6>Complete Privacy</h6>
-                  <p className="small text-muted-modern mb-0">
-                    Your documents never leave your device
-                  </p>
-                </div>
-              </div>
-              <div className="col-md-4">
-                <div className="text-center p-3 border rounded h-100">
-                  <i className="fas fa-wifi-slash fa-2x text-primary mb-3"></i>
-                  <h6>Offline Access</h6>
-                  <p className="small text-muted-modern mb-0">
-                    Work on your documents even without internet
-                  </p>
-                </div>
-              </div>
-              <div className="col-md-4">
-                <div className="text-center p-3 border rounded h-100">
-                  <i className="fas fa-tachometer-alt fa-2x text-warning mb-3"></i>
-                  <h6>Faster Loading</h6>
-                  <p className="small text-muted-modern mb-0">
-                    Instant access to your saved documents
-                  </p>
                 </div>
               </div>
             </div>

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { parseTeam } from "./utils/parseTeam";
 import ImageLoader from "./ImageLoader";
@@ -10,10 +11,12 @@ const TeamForm = ({ data, setData }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [loadingImages, setLoadingImages] = useState(false);
+  const [isNewPaste, setIsNewPaste] = useState(false);
   const BACK_URL = process.env.REACT_APP_BACK_URL;
 
   useEffect(() => {
     if (data?.paste) {
+      setIsNewPaste(false);
       setPasteId(data.paste);
       setIsSubmitted(true);
     }
@@ -34,7 +37,12 @@ const TeamForm = ({ data, setData }) => {
 
   const fetchPokemonImages = async (pasteId) => {
     if (!pasteId) return;
-    
+
+    if (isNewPaste) {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      setIsNewPaste(false);
+    }
+
     setLoadingImages(true);
     try {
       const response = await fetch(
@@ -43,7 +51,7 @@ const TeamForm = ({ data, setData }) => {
       const images = await response.json();
       setPokemonImages(images);
     } catch (error) {
-      setError("Failed to fetch Pokémon images");
+      console.error("Failed to fetch Pokémon images", error);
     } finally {
       setLoadingImages(false);
     }
@@ -93,6 +101,7 @@ const TeamForm = ({ data, setData }) => {
           const pasteIdMatch = response.url.match(/\/([^/]+)\/?$/);
           if (pasteIdMatch) {
             extractedPasteId = pasteIdMatch[1];
+            setIsNewPaste(true);
             setPasteId(extractedPasteId);
           }
         }
@@ -144,13 +153,6 @@ const TeamForm = ({ data, setData }) => {
           </button>
         )}
       </div>
-
-      {error && (
-        <div className="alert alert-danger d-flex align-items-center mb-4" role="alert">
-          <i className="fas fa-exclamation-triangle me-2"></i>
-          {error}
-        </div>
-      )}
 
       {!isSubmitted ? (
         <form onSubmit={handleFormSubmit}>

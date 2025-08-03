@@ -235,19 +235,24 @@ const StoredViewer = () => {
     <div className="fade-in viewer-page-container">
       {/* Main Layout: Desktop */}
       <div className="d-none d-lg-block mb-4">
-        <div className="form-tabs d-none d-lg-flex">
-          <button
-            className={`form-tab ${activeViewerTab === "matchups" ? "active" : ""}`}
-            onClick={() => setActiveViewerTab("matchups")}
-          >
-            <i className="fas fa-gamepad me-2"></i> Matchups
-          </button>
-          <button
-            className={`form-tab ${activeViewerTab === "team" ? "active" : ""}`}
-            onClick={() => setActiveViewerTab("team")}
-          >
-            <i className="fas fa-users me-2"></i> Team Analysis
-          </button>
+        <div className="d-flex justify-content-between align-items-center">
+          <div className="form-tabs d-none d-lg-flex">
+            <button
+              className={`form-tab ${activeViewerTab === "matchups" ? "active" : ""}`}
+              onClick={() => setActiveViewerTab("matchups")}
+            >
+              <i className="fas fa-gamepad me-2"></i> Matchups
+            </button>
+            <button
+              className={`form-tab ${activeViewerTab === "team" ? "active" : ""}`}
+              onClick={() => setActiveViewerTab("team")}
+            >
+              <i className="fas fa-users me-2"></i> Team Analysis
+            </button>
+          </div>
+          <div className="d-none d-lg-block">
+            <TeamPreview pokemonImages={pokemonImages} loadingImages={loadingImages} teamLength={data.team.length} />
+          </div>
         </div>
         <div className="viewer-layout">
           {/* Main Content */}
@@ -255,7 +260,7 @@ const StoredViewer = () => {
             {activeViewerTab === 'matchups' && (
               <>
                 {data.matchups.length > 0 && (
-                  <div className="content-card-modern mb-4">
+                  <div>
                     {data.matchups[selectedMatchup] && (
                       <div className="matchup-content" id={`matchup-${selectedMatchup}`}>
                         <div className="d-flex align-items-center justify-content-between mb-3">
@@ -442,9 +447,6 @@ const StoredViewer = () => {
           {/* Sidebar */}
           <div>
             <div className="matchups-sidebar">
-              <div className="d-none d-lg-block">
-                <TeamPreview pokemonImages={pokemonImages} loadingImages={loadingImages} teamLength={data.team.length} />
-              </div>
               {activeViewerTab === 'matchups' && data.matchups.length > 0 && (
                 <>
                   <h5 className="mb-3">
@@ -517,7 +519,9 @@ const StoredViewer = () => {
 
       {/* Mobile Content */}
       <div className="d-block d-lg-none">
-        <TeamPreview pokemonImages={pokemonImages} loadingImages={loadingImages} teamLength={data.team.length} />
+        <div className="mb-4">
+          <TeamPreview pokemonImages={pokemonImages} loadingImages={loadingImages} teamLength={data.team.length} />
+        </div>
         {/* Matchups Tab Content */}
         {activeTab === "matchups" && data.matchups.length > 0 && (
           <div className="p-0-mobile">

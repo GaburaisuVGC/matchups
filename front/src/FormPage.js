@@ -145,18 +145,20 @@ const FormPage = () => {
   return (
     <div className="fade-in form-page-container">
       {/* CTA How To Use */}
-      <div className="cta-how-to-use-subtle text-center">
-        <div className="d-flex align-items-center justify-content-center mb-3">
-          <i className="fas fa-rocket fa-2x me-3"></i>
-          <div className="text-start">
-            <h2 className="h4 mb-1">New to Matchups.net?</h2>
-            <p className="mb-0 opacity-90">Learn how to create professional tournament preparation documents</p>
+      <div className="cta-how-to-use-subtle">
+        <div className="d-lg-flex justify-content-lg-between align-items-lg-center text-center text-lg-start">
+          <div className="d-flex align-items-center justify-content-center justify-content-lg-start mb-3 mb-lg-0">
+            <i className="fas fa-rocket fa-2x me-3 d-none d-lg-block"></i>
+            <div className="text-start">
+              <h2 className="h4 mb-1">New to Matchups.net?</h2>
+              <p className="mb-0 opacity-90">Learn how to create professional tournament preparation documents</p>
+            </div>
           </div>
+          <a href="/how-to-use" className="btn btn-subtle-modern btn-lg">
+            <i className="fas fa-question-circle me-2"></i>
+            How to use it?
+          </a>
         </div>
-        <a href="/how-to-use" className="btn btn-subtle-modern btn-lg">
-          <i className="fas fa-question-circle me-2"></i>
-          Quick Start Guide
-        </a>
       </div>
 
       {/* Page Title */}

@@ -249,7 +249,7 @@ const App = () => {
                   rel="noopener noreferrer"
                 >
                   <i className="fab fa-github me-1"></i>
-                  v1.7.2
+                  v2.0.0
                 </a>
               </div>
             </div>

@@ -40,33 +40,10 @@ const ImageLoader = ({
     </div>
   );
 
-  const ErrorPlaceholder = () => (
-    <div 
-      className={`image-error ${className}`}
-      style={{
-        ...style,
-        background: '#f8f9fa',
-        border: '2px dashed #dee2e6',
-        borderRadius: '8px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: '#6c757d',
-        fontSize: '0.75rem',
-        flexDirection: 'column'
-      }}
-    >
-      <i className="fas fa-exclamation-triangle mb-1"></i>
-      <span>Error</span>
-    </div>
-  );
-
   return (
     <>
       {loading && showSkeleton && <Skeleton />}
-      {error ? (
-        <ErrorPlaceholder />
-      ) : (
+      {!error && (
         <img
           src={src}
           alt={alt}
@@ -93,12 +70,6 @@ const ImageLoader = ({
         .dark-mode .skeleton-loader {
           background: linear-gradient(90deg, #333 25%, #444 50%, #333 75%) !important;
           color: #666 !important;
-        }
-        
-        .dark-mode .image-error {
-          background: #333 !important;
-          border-color: #555 !important;
-          color: #999 !important;
         }
       `}</style>
     </>
