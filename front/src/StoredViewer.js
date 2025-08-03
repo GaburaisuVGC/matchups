@@ -281,7 +281,7 @@ const StoredViewer = () => {
             className={`viewer-tab ${activeTab === "matchups" ? "active" : ""}`}
             onClick={() => setActiveTab("matchups")}
           >
-            <i className="fas fa-swords me-2"></i>
+            <i className="fas fa-gamepad me-2"></i>
             Matchups ({data.matchups.length})
           </span>
           <span
@@ -301,7 +301,7 @@ const StoredViewer = () => {
             className={`form-tab ${activeViewerTab === "matchups" ? "active" : ""}`}
             onClick={() => setActiveViewerTab("matchups")}
           >
-            <i className="fas fa-swords me-2"></i> Matchups
+            <i className="fas fa-gamepad me-2"></i> Matchups
           </button>
           <button
             className={`form-tab ${activeViewerTab === "team" ? "active" : ""}`}
@@ -461,7 +461,7 @@ const StoredViewer = () => {
                     <div className="row">
                       <div className="col-md-6">
                       <h6 className="text-success mb-2">
-                        <i className="fas fa-sword me-2"></i>
+                        <i className="fas fa-khanda me-2"></i>
                         Offensive Calculations
                       </h6>
                       {data.team[selectedPokemon].calcs[0]?.offensive?.length > 0 ? (
@@ -777,7 +777,7 @@ const StoredViewer = () => {
                           {hasOffensiveCalcs && (
                             <div className="mb-3">
                               <h6 className="text-success mb-2">
-                                <i className="fas fa-sword me-2"></i>
+                                <i className="fas fa-khanda me-2"></i>
                                 Offensive
                               </h6>
                               <div className="row g-2">

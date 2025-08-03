@@ -431,7 +431,7 @@ const JsonViewer = () => {
                     <div className="row">
                       <div className="col-md-6">
                       <h6 className="text-success mb-2">
-                        <i className="fas fa-sword me-2"></i>
+                        <i className="fas fa-khanda me-2"></i>
                         Offensive Calculations
                       </h6>
                       {data.team[selectedPokemon].calcs[0]?.offensive?.length > 0 ? (
@@ -746,7 +746,7 @@ const JsonViewer = () => {
                           {hasOffensiveCalcs && (
                             <div className="mb-3">
                               <h6 className="text-success mb-2">
-                                <i className="fas fa-sword me-2"></i>
+                                <i className="fas fa-khanda me-2"></i>
                                 Offensive
                               </h6>
                               <div className="row g-2">

@@ -284,74 +284,63 @@ const FormPage = () => {
 
             {/* Action Buttons Section */}
             <div className="form-section-modern">
-              <div className="row g-3">
-                {/* Primary Actions */}
-                <div className="col-md-6">
-                  <div className="d-grid gap-2">
-                    <button
-                      onClick={handleSave}
-                      className="btn btn-primary-modern d-flex align-items-center justify-content-center"
-                      disabled={!teamSubmitted || isLoading}
-                    >
-                      {isLoading ? (
-                        <>
-                          <div
-                            className="spinner-border spinner-border-sm me-2"
-                            role="status"
-                          >
-                            <span className="visually-hidden">Loading...</span>
-                          </div>
-                          Saving...
-                        </>
-                      ) : (
-                        <>
-                          <i className="fas fa-cloud-upload-alt me-2"></i>
-                          Save & Share
-                        </>
-                      )}
-                    </button>
-                    <button
-                      onClick={handleSaveStored}
-                      className="btn btn-secondary-modern d-flex align-items-center justify-content-center"
-                      disabled={!teamSubmitted}
-                    >
-                      <i className="fas fa-save me-2"></i>
-                      Save Locally
-                    </button>
-                  </div>
+              <div className="row g-2">
+                <div className="col-6 d-grid">
+                  <button
+                    onClick={handleSave}
+                    className="btn btn-primary-modern"
+                    disabled={!teamSubmitted || isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        <div className="spinner-border spinner-border-sm me-2" role="status">
+                          <span className="visually-hidden">Loading...</span>
+                        </div>
+                        <span>Saving...</span>
+                      </>
+                    ) : (
+                      <>
+                        <i className="fas fa-cloud-upload-alt me-2"></i>
+                        <span>Save & Share</span>
+                      </>
+                    )}
+                  </button>
                 </div>
-
-                {/* Secondary Actions */}
-                <div className="col-md-6">
-                  <div className="d-grid gap-2">
-                    <button
-                      onClick={downloadJSON}
-                      className="btn btn-secondary-modern d-flex align-items-center justify-content-center"
-                      disabled={!teamSubmitted}
-                    >
-                      <i className="fas fa-download me-2"></i>
-                      Download Draft
-                    </button>
-                    <div className="position-relative">
-                      <input
-                        type="file"
-                        accept=".json"
-                        onChange={handleFileUpload}
-                        className="position-absolute opacity-0"
-                        style={{ left: "-9999px" }}
-                        id="file-upload"
-                      />
-                      <button
-                        className="btn btn-secondary-modern w-100 d-flex align-items-center justify-content-center"
-                        onClick={() =>
-                          document.getElementById("file-upload").click()
-                        }
-                      >
-                        <i className="fas fa-upload me-2"></i>
-                        Load Draft
-                      </button>
-                    </div>
-                  </div>
+                <div className="col-6 d-grid">
+                  <button
+                    onClick={handleSaveStored}
+                    className="btn btn-secondary-modern"
+                    disabled={!teamSubmitted}
+                  >
+                    <i className="fas fa-save me-2"></i>
+                    <span>Save Locally</span>
+                  </button>
+                </div>
+                <div className="col-6 d-grid">
+                  <button
+                    onClick={downloadJSON}
+                    className="btn btn-secondary-modern"
+                    disabled={!teamSubmitted}
+                  >
+                    <i className="fas fa-download me-2"></i>
+                    <span>Download Draft</span>
+                  </button>
+                </div>
+                <div className="col-6 d-grid">
+                  <input
+                    type="file"
+                    accept=".json"
+                    onChange={handleFileUpload}
+                    className="d-none"
+                    id="file-upload"
+                  />
+                  <button
+                    className="btn btn-secondary-modern"
+                    onClick={() => document.getElementById("file-upload").click()}
+                  >
+                    <i className="fas fa-upload me-2"></i>
+                    <span>Load Draft</span>
+                  </button>
                 </div>
               </div>
 
