@@ -1638,7 +1638,7 @@ body.dark-mode {
 
 /* Burger Menu */
 .burger-menu-dropdown {
-  position: absolute;
+  position: sticky;
   top: var(--header-height);
   left: 0;
   right: 0;

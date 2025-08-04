@@ -262,7 +262,7 @@ Adamant Nature
                   <div className="col-md-6">
                     <div className="border rounded p-3">
                       <h6 className="text-success mb-2">
-                        <i className="fas fa-sword me-2"></i>
+                        <i className="fas fa-khanda me-2"></i>
                         Offensive Calcs
                       </h6>
                       <ul className="small mb-0">
@@ -301,7 +301,7 @@ Adamant Nature
               </div>
               <div className="flex-grow-1">
                 <h3 className="h4 mb-3">
-                  <i className="fas fa-swords me-2 text-accent-modern"></i>
+                  <i className="fas fa-gamepad me-2 text-accent-modern"></i>
                   Matchup Analysis
                 </h3>
                 <div className="mb-3">
