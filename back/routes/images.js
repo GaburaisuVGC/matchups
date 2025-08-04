@@ -1,5 +1,4 @@
 const express = require('express');
-const axios = require('axios');
 const puppeteer = require('puppeteer');
 
 const router = express.Router();
@@ -17,7 +16,6 @@ router.get('/', async (req, res) => {
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: 'networkidle2' });
 
-    // Wait for the images to load
     await page.waitForSelector('.img-pokemon');
 
     const images = await page.evaluate(() => {
