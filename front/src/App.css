@@ -1211,7 +1211,7 @@ body.dark-mode {
 
 /* ===== Scrollbar Styling ===== */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 0;
   height: 6px;
 }
 
@@ -1638,7 +1638,7 @@ body.dark-mode {
 
 /* Burger Menu */
 .burger-menu-dropdown {
-  position: fixed;
+  position: absolute;
   top: var(--header-height);
   left: 0;
   right: 0;
