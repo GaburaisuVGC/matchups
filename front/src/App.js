@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 import FormPage from "./FormPage";
 import JsonViewer from "./JsonViewer";
 import HowToUse from "./HowToUse";
@@ -32,11 +37,8 @@ const Header = ({ isDarkMode, toggleDarkMode }) => {
       <header className="header-modern d-none d-lg-block">
         <div className="container-modern">
           <div className="d-flex justify-content-between align-items-center">
-            <div
-              onClick={() => navigate("/")}
-              className="logo-modern"
-            >
-              Matchups.net
+            <div onClick={() => navigate("/")} className="logo-modern">
+              <span className="text-accent-modern">Matchups</span>.net
             </div>
             <div className="btn-group-modern">
               <button
@@ -78,7 +80,7 @@ const Header = ({ isDarkMode, toggleDarkMode }) => {
             </button>
 
             <div onClick={() => handleNav("/")} className="logo-mobile">
-              Matchups.net
+              <span className="text-accent-modern">Matchups</span>.net
             </div>
 
             <button
@@ -145,20 +147,24 @@ const App = () => {
   return (
     <div
       className={`${isDarkMode ? "dark-mode" : "light-mode"} fade-in`}
-      style={{ 
-        minHeight: "100vh", 
-        fontFamily: "'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif", 
-        display: "flex", 
-        flexDirection: "column"
+      style={{
+        minHeight: "100vh",
+        fontFamily:
+          "'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       <Router>
         <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
         <CookieConsent />
-        <div className="container-fluid flex-grow-1" style={{ padding: 0 }}>
+        <div className="flex-grow-1" style={{ padding: 0 }}>
           <div className="container-modern main-content">
             <Routes>
-              <Route path="/" element={<FormPage data={data} setData={setData} />} />
+              <Route
+                path="/"
+                element={<FormPage data={data} setData={setData} />}
+              />
               <Route path="/how-to-use" element={<HowToUse />} />
               <Route path="/stored" element={<StoredViewer />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -183,17 +189,11 @@ const App = () => {
                     <i className="fas fa-user me-1"></i>
                     Project by Matthieu Barbe
                   </a>
-                  <a
-                    href="/how-to-use"
-                    className="text-decoration-none me-3"
-                  >
+                  <a href="/how-to-use" className="text-decoration-none me-3">
                     <i className="fas fa-question-circle me-1"></i>
                     How to use it?
                   </a>
-                  <a
-                    href="/privacy-policy"
-                    className="text-decoration-none"
-                  >
+                  <a href="/privacy-policy" className="text-decoration-none">
                     <i className="fas fa-shield-alt me-1"></i>
                     Privacy Policy
                   </a>
@@ -208,7 +208,7 @@ const App = () => {
                     rel="noopener noreferrer"
                   >
                     <i className="fab fa-github me-1"></i>
-                    v2.0.3
+                    v2.0.4
                   </a>
                 </p>
               </div>
@@ -228,17 +228,11 @@ const App = () => {
                 Project by Matthieu Barbe
               </a>
               <div className="d-flex justify-content-center gap-3">
-                <a
-                  href="/how-to-use"
-                  className="text-decoration-none"
-                >
+                <a href="/how-to-use" className="text-decoration-none">
                   <i className="fas fa-question-circle me-1"></i>
                   Guide
                 </a>
-                <a
-                  href="/privacy-policy"
-                  className="text-decoration-none"
-                >
+                <a href="/privacy-policy" className="text-decoration-none">
                   <i className="fas fa-shield-alt me-1"></i>
                   Privacy
                 </a>
@@ -249,7 +243,7 @@ const App = () => {
                   rel="noopener noreferrer"
                 >
                   <i className="fab fa-github me-1"></i>
-                  v2.0.3
+                  v2.0.4
                 </a>
               </div>
             </div>
