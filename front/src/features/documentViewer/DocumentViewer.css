@@ -1,0 +1,282 @@
+/* Layout for pages with sidebar */
+.viewer-layout {
+  display: grid;
+  gap: var(--spacing-xl);
+}
+
+@media (min-width: 1024px) {
+  .viewer-layout {
+    grid-template-columns: 1fr 400px; /* Contenu principal + sidebar */
+  }
+}
+
+@media (min-width: 1400px) {
+  .viewer-layout {
+    grid-template-columns: 1fr 450px; /* Plus d'espace en très large */
+  }
+}
+
+.light-mode .matchups-sidebar {
+  background-color: var(--bg-secondary-light);
+  border-color: var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.dark-mode .matchups-sidebar {
+  background-color: var(--bg-secondary-dark);
+  border-color: var(--border-dark);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Navigation locale pour matchups */
+.matchups-nav {
+  margin-bottom: var(--spacing-lg);
+}
+
+.matchup-nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  margin-bottom: var(--spacing-xs);
+  text-decoration: none;
+}
+
+.light-mode .matchup-nav-item {
+  color: var(--text-secondary-light);
+}
+
+.dark-mode .matchup-nav-item {
+  color: var(--text-secondary-dark);
+}
+
+.matchup-nav-item:hover {
+  transform: translateX(4px);
+  text-decoration: none;
+}
+
+.light-mode .matchup-nav-item:hover {
+  background-color: var(--bg-tertiary-light);
+  border-color: var(--border-light);
+  color: var(--text-primary-light);
+}
+
+.dark-mode .matchup-nav-item:hover {
+  background-color: var(--bg-tertiary-dark);
+  border-color: var(--border-dark);
+  color: var(--text-primary-dark);
+}
+
+.dark-mode .matchup-nav-item .text-muted {
+  color: var(--text-primary-dark) !important;
+}
+
+.matchup-nav-item.active {
+  font-weight: 600;
+}
+
+.light-mode .matchup-nav-item.active {
+  background-color: var(--accent-primary-light);
+  color: white;
+  border-color: var(--accent-primary-light);
+}
+
+.dark-mode .matchup-nav-item.active {
+  background-color: var(--accent-primary-dark);
+  color: var(--bg-primary-dark);
+  border-color: var(--accent-primary-dark);
+}
+
+.matchup-nav-badge {
+  font-size: var(--font-size-xs);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+}
+
+.light-mode .matchup-nav-badge {
+  background-color: var(--bg-primary-light);
+  color: var(--text-secondary-light);
+}
+
+.dark-mode .matchup-nav-badge {
+  background-color: var(--bg-primary-dark);
+  color: var(--text-primary-dark);
+}
+
+.matchup-nav-item.active .matchup-nav-badge {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* Zone d'affichage des matchups desktop */
+.matchup-content {
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  border: 1px solid;
+  margin-bottom: var(--spacing-lg);
+}
+
+.light-mode .matchup-content {
+  background-color: var(--bg-secondary-light);
+  border-color: var(--border-light);
+}
+
+.dark-mode .matchup-content {
+  background-color: var(--bg-secondary-dark);
+  border-color: var(--border-dark);
+}
+
+/* Matchups mobile compact */
+.matchup-mobile-compact {
+  margin-bottom: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  border: 1px solid;
+  overflow: hidden;
+}
+
+.light-mode .matchup-mobile-compact {
+  border-color: var(--border-light);
+  background-color: var(--bg-primary-light);
+}
+
+.dark-mode .matchup-mobile-compact {
+  border-color: var(--border-dark);
+  background-color: var(--bg-primary-dark);
+}
+
+.matchup-mobile-compact-header {
+  padding: var(--spacing-sm) var(--spacing-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.light-mode .matchup-mobile-compact-header {
+  background-color: var(--bg-secondary-light);
+}
+
+.dark-mode .matchup-mobile-compact-header {
+  background-color: var(--bg-secondary-dark);
+}
+
+.light-mode .matchup-mobile-compact-header:hover {
+  background-color: var(--bg-tertiary-light);
+}
+
+.dark-mode .matchup-mobile-compact-header:hover {
+  background-color: var(--bg-tertiary-dark);
+}
+
+.matchup-mobile-compact-content {
+  padding: 0;
+  border-top: 1px solid;
+}
+
+.light-mode .matchup-mobile-compact-content {
+  border-top-color: var(--border-light);
+}
+
+.dark-mode .matchup-mobile-compact-content {
+  border-top-color: var(--border-dark);
+}
+
+.gameplan-compact-section {
+  padding: var(--spacing-xs) var(--spacing-md);
+}
+
+.gameplan-compact-section + .gameplan-compact-section {
+  border-top: 1px solid;
+}
+
+.light-mode .gameplan-compact-section + .gameplan-compact-section {
+  border-top-color: var(--border-light);
+}
+
+.dark-mode .gameplan-compact-section + .gameplan-compact-section {
+  border-top-color: var(--border-dark);
+}
+
+.composition-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm);
+}
+
+/* Mobile matchups optimisés */
+@media (max-width: 1023px) {
+  .viewer-layout {
+    display: block;
+  }
+  
+  .matchups-sidebar {
+    display: none; /* Caché en mobile */
+  }
+  
+  .matchup-mobile-item {
+    margin-bottom: var(--spacing-sm);
+    border-radius: var(--radius-md);
+    border: 1px solid;
+    overflow: hidden;
+  }
+  
+  .light-mode .matchup-mobile-item {
+    border-color: var(--border-light);
+  }
+  
+  .dark-mode .matchup-mobile-item {
+    border-color: var(--border-dark);
+  }
+  
+  .matchup-mobile-header {
+    padding: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .light-mode .matchup-mobile-header {
+    background-color: var(--bg-secondary-light);
+  }
+  
+  .dark-mode .matchup-mobile-header {
+    background-color: var(--bg-secondary-dark);
+  }
+  
+  .matchup-mobile-header:hover {
+    background-color: var(--bg-tertiary-light);
+  }
+  
+  .dark-mode .matchup-mobile-header:hover {
+    background-color: var(--bg-tertiary-dark);
+  }
+}
+
+.calc-text {
+  white-space: pre-wrap;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 1px solid;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: var(--font-size-sm);
+}
+
+.light-mode .calc-text {
+  background-color: var(--bg-tertiary-light);
+  border-color: var(--border-light);
+  color: var(--text-secondary-light);
+}
+
+.dark-mode .calc-text {
+  background-color: var(--bg-tertiary-dark);
+  border-color: var(--border-dark);
+  color: var(--text-secondary-dark);
+}

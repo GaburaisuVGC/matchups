@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import MatchupForm from './MatchupForm';
-import AddMatchupForm from './AddMatchupForm';
+import MatchupForm from '../documentEditor/MatchupForm';
+import AddMatchupForm from '../documentEditor/AddMatchupForm';
 
 const MatchupListMobile = ({ data, setData, setSelectedMatchup }) => {
   const [expandedIndex, setExpandedIndex] = useState(null);

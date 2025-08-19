@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
-import { parseTeam } from "./utils/parseTeam";
+import { parseTeam } from "../../utils/parseTeam";
+import { createPaste } from "../../services/apiService";
 
 const TeamForm = ({ data, setData }) => {
   const [teamInput, setTeamInput] = useState("");
@@ -46,19 +47,7 @@ const TeamForm = ({ data, setData }) => {
       }
 
       if (teamInput.trim()) {
-        const response = await fetch(`${BACK_URL}/create-paste`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ paste: teamInput }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const result = await response.json();
+        const result = await createPaste(teamInput);
         const extractedPasteId = result.pasteId;
 
         if (extractedPasteId) {

@@ -1,0 +1,283 @@
+/* CTA HowToUse sobre */
+.cta-how-to-use-subtle {
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  border: 1px solid;
+  transition: all 0.2s ease;
+}
+
+.light-mode .cta-how-to-use-subtle {
+  background-color: var(--bg-secondary-light);
+  border-color: var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.dark-mode .cta-how-to-use-subtle {
+  background-color: var(--bg-secondary-dark);
+  border-color: var(--border-dark);
+  box-shadow: var(--shadow-sm);
+}
+
+.cta-how-to-use-subtle:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Layout desktop horizontal pour page d'accueil */
+.homepage-desktop-layout {
+  display: grid;
+  gap: 0;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 1200px) {
+  .homepage-desktop-layout {
+    grid-template-columns: minmax(0, 2fr) 1fr;
+    align-items: start;
+    gap: var(--spacing-xl);
+  }
+}
+
+.homepage-sticky-actions {
+  position: sticky;
+  top: calc(var(--header-height) + var(--spacing-xl));
+}
+
+/* Form tabs */
+.form-tabs {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  border-bottom: 1px solid;
+}
+
+.light-mode .form-tabs {
+  border-bottom-color: var(--border-light);
+}
+
+.dark-mode .form-tabs {
+  border-bottom-color: var(--border-dark);
+}
+
+.form-tab {
+  padding: var(--spacing-md);
+  cursor: pointer;
+  border: none;
+  background: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.light-mode .form-tab {
+  color: var(--text-secondary-light);
+}
+
+.dark-mode .form-tab {
+  color: var(--text-secondary-dark);
+}
+
+.form-tab.active {
+  font-weight: 600;
+}
+
+.light-mode .form-tab.active {
+  color: var(--accent-primary-light);
+  border-bottom-color: var(--accent-primary-light);
+}
+
+.dark-mode .form-tab.active {
+  color: var(--accent-primary-dark);
+  border-bottom-color: var(--accent-primary-dark);
+}
+
+.form-tab:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== Form Components ===== */
+.form-section-modern {
+  background: transparent;
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+  border: 1px solid;
+  transition: all 0.2s ease;
+}
+
+.light-mode .form-section-modern {
+  background-color: var(--bg-secondary-light);
+  border-color: var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.dark-mode .form-section-modern {
+  background-color: var(--bg-secondary-dark);
+  border-color: var(--border-dark);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-section-modern:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.form-title-modern {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  margin-bottom: var(--spacing-lg);
+  line-height: 1.4;
+}
+
+.light-mode .form-title-modern {
+  color: var(--text-primary-light);
+}
+
+.dark-mode .form-title-modern {
+  color: var(--text-primary-dark);
+}
+
+.form-group-modern {
+  margin-bottom: var(--spacing-lg);
+}
+
+.form-label-modern {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  margin-bottom: var(--spacing-sm);
+  display: block;
+}
+
+.light-mode .form-label-modern {
+  color: var(--text-secondary-light);
+}
+
+.dark-mode .form-label-modern {
+  color: var(--text-secondary-dark);
+}
+
+.compo-form {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  line-height: 1.5;
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+  border: 1px solid;
+}
+
+.light-mode .compo-form {
+  color: var(--text-primary-light);
+  background-color: var(--bg-primary-light);
+  border-color: var(--border-light);
+}
+
+.dark-mode .compo-form {
+  color: var(--text-primary-dark);
+  background-color: var(--bg-tertiary-dark);
+  border-color: var(--border-dark);
+}
+
+.form-control-inline {
+  display: inline-block;
+  width: calc(50% - 0.25rem);
+  margin-right: 0.5rem;
+}
+
+.form-control-inline:last-child {
+  margin-right: 0;
+}
+
+.light-mode .lead-select {
+  background-color: var(--accent-primary-light);
+  color: #fff;
+  border-color: var(--accent-primary-light);
+}
+
+.light-mode .back-select {
+  background-color: var(--accent-secondary-light);
+  color: #fff;
+  border-color: var(--accent-secondary-light);
+}
+
+.dark-mode .lead-select {
+  background-color: var(--accent-primary-dark);
+  color: var(--bg-primary-dark);
+  border-color: var(--accent-primary-dark);
+}
+
+.dark-mode .back-select {
+  background-color: var(--accent-secondary-dark);
+  color: var(--bg-primary-dark);
+  border-color: var(--accent-secondary-dark);
+}
+
+.help-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 0.5rem;
+}
+
+/* Accordion Styles for CalcForm */
+.accordion-item-modern {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-sm);
+  overflow: hidden; /* Ensures the child border-radius is respected */
+}
+
+.dark-mode .accordion-item-modern {
+  border: 1px solid var(--border-dark);
+}
+
+.accordion-header-modern {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  background-color: var(--bg-secondary-light);
+  transition: background-color 0.2s ease-in-out;
+}
+
+.accordion-header-modern .fw-medium {
+  font-size: 0.9rem;
+}
+
+.accordion-header-modern .badge {
+  font-size: 0.65rem;
+  padding: 0.25rem 0.4rem;
+}
+
+.dark-mode .accordion-header-modern {
+  background-color: var(--bg-secondary-dark);
+}
+
+.accordion-header-modern:hover {
+  background-color: var(--bg-tertiary-light);
+}
+
+.dark-mode .accordion-header-modern:hover {
+  background-color: var(--bg-tertiary-dark);
+}
+
+.accordion-body-modern {
+  padding: 1.25rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.dark-mode .accordion-body-modern {
+  border-top: 1px solid var(--border-dark);
+}
+
+/* Padding for content */
+@media (max-width: 991.98px) { /* Below lg breakpoint */
+  .form-page-container, .viewer-page-container {
+    padding-bottom: 70px; /* height of new nav */
+  }
+}
