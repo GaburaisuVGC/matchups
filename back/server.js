@@ -1,10 +1,8 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const encodeRouter = require('./routes/encode');
-const decodeRouter = require('./routes/decode');
-const imagesRouter = require('./routes/images');
-const createPasteRouter = require('./routes/createPaste');
+const documentRouter = require('./src/features/documents/document.routes.js');
+const integrationRouter = require('./src/features/integrations/integration.routes.js');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 const port = process.env.PORT || 8000;
@@ -28,10 +26,8 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.static('build'));
 
-app.use('/encode', encodeRouter);
-app.use('/decode', decodeRouter);
-app.use('/parse-pokebin', imagesRouter);
-app.use('/create-paste', createPasteRouter);
+app.use('/', documentRouter);
+app.use('/', integrationRouter);
 app.use('/', (req, res) => {
     res.send('Hello World!');
 });

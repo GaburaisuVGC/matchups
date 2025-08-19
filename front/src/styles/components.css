@@ -1,0 +1,130 @@
+/* This file contains shared styles for common UI components like cards, buttons, forms, etc. */
+
+/* ===== Cards ===== */
+.light-mode .card-modern {
+  background-color: var(--bg-secondary-light);
+  color: var(--text-primary-light);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.light-mode .card-modern:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-hover-light);
+}
+
+.dark-mode .card-modern {
+  background-color: var(--bg-secondary-dark);
+  color: var(--text-primary-dark);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.dark-mode .card-modern:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-hover-dark);
+}
+
+/* ===== Buttons ===== */
+.light-mode .btn-primary-modern {
+  background-color: var(--accent-primary-light);
+  border-color: var(--accent-primary-light);
+  color: white;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  padding: 0.625rem 1.25rem;
+  font-size: var(--font-size-sm);
+  transition: all 0.2s ease;
+  border: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.light-mode .btn-primary-modern:hover {
+  background-color: var(--accent-hover-light);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.dark-mode .btn-primary-modern {
+  background-color: var(--accent-primary-dark);
+  border-color: var(--accent-primary-dark);
+  color: var(--bg-primary-dark);
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  padding: 0.625rem 1.25rem;
+  font-size: var(--font-size-sm);
+  transition: all 0.2s ease;
+  border: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.dark-mode .btn-primary-modern:hover {
+  background-color: var(--accent-hover-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.light-mode .btn-secondary-modern {
+  background-color: var(--bg-tertiary-light);
+  border-color: var(--border-light);
+  color: var(--text-secondary-light);
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  padding: 0.625rem 1.25rem;
+  font-size: var(--font-size-sm);
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.light-mode .btn-secondary-modern:hover {
+  background-color: var(--bg-primary-light);
+  border-color: var(--border-hover-light);
+  color: var(--text-primary-light);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.dark-mode .btn-secondary-modern {
+  background-color: var(--bg-tertiary-dark);
+  border-color: var(--border-dark);
+  color: var(--text-secondary-dark);
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  padding: 0.625rem 1.25rem;
+  font-size: var(--font-size-sm);
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.dark-mode .btn-secondary-modern:hover {
+  background-color: var(--bg-secondary-dark);
+  border-color: var(--border-hover-dark);
+  color: var(--text-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-subtle-modern {
+  background-color: transparent;
+  border: 1px solid;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  padding: 0.625rem 1.25rem;
+  font-size: var(--font-size-sm);
+  transition: all 0.2s ease;
+}
+
+/* ... and so on for all other component-like styles ... */
+
+.btn:disabled,
+.btn.disabled {
+  opacity: 0.65 !important;
+  cursor: not-allowed !important;
+  pointer-events: auto !important;
+  transform: none !important;
+  box-shadow: none !important;
+}

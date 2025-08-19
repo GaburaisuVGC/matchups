@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import "./App.css";
+import "../../App.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 const MatchupForm = ({ data, setData, selectedMatchup, setSelectedMatchup }) => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './MobileNavigation.css';
 
 const MobileNavigation = ({ tabs, activeTab, setActiveTab, disabled }) => {
   if (disabled || !tabs || tabs.length === 0) {
