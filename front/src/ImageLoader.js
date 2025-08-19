@@ -43,7 +43,7 @@ const ImageLoader = ({
   return (
     <>
       {loading && showSkeleton && <Skeleton />}
-      {!error && (
+      {!error && src && (
         <img
           src={src}
           alt={alt}
