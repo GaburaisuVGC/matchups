@@ -45,33 +45,25 @@ const TeamForm = ({ data, setData }) => {
         return;
       }
 
-      // Create paste on PokeBin
-      const formData = new URLSearchParams();
-      formData.append("title", "");
-      formData.append("author", "");
-      formData.append("notes", "");
-      formData.append("format", "");
-      formData.append("rental", "");
-      formData.append("encrypted_data", "");
-      formData.append("paste", teamInput);
-
       if (teamInput.trim()) {
-        const response = await fetch("https://pokebin.com/create", {
+        const response = await fetch(`${BACK_URL}/create-paste`, {
           method: "POST",
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/json",
           },
-          body: formData.toString(),
+          body: JSON.stringify({ paste: teamInput }),
         });
 
-        let extractedPasteId = "";
-        if (response.url) {
-          const pasteIdMatch = response.url.match(/\/([^/]+)\/?$/);
-          if (pasteIdMatch) {
-            extractedPasteId = pasteIdMatch[1];
-            setIsNewPaste(true);
-            setPasteId(extractedPasteId);
-          }
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const result = await response.json();
+        const extractedPasteId = result.pasteId;
+
+        if (extractedPasteId) {
+          setIsNewPaste(true);
+          setPasteId(extractedPasteId);
         }
 
         setData((prevData) => ({
@@ -145,7 +137,10 @@ IVs: 0 Atk
 - Solar Beam
 - Hurricane
 - Protect"
-              style={{ fontFamily: "'Monaco', 'Menlo', 'Ubuntu Mono', monospace", fontSize: "0.875rem" }}
+              style={{
+                fontFamily: "'Monaco', 'Menlo', 'Ubuntu Mono', monospace",
+                fontSize: "0.875rem",
+              }}
               required
             />
             <div className="text-muted-modern mt-2">
@@ -157,14 +152,17 @@ IVs: 0 Atk
           </div>
 
           <div className="d-grid">
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="btn btn-primary-modern"
               disabled={isLoading || !teamInput.trim()}
             >
               {isLoading ? (
                 <>
-                  <div className="spinner-border spinner-border-sm me-2" role="status">
+                  <div
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                  >
                     <span className="visually-hidden">Loading...</span>
                   </div>
                   Processing Team...
@@ -195,7 +193,9 @@ IVs: 0 Atk
                 <div className="d-flex align-items-center flex-grow-1 min-w-0">
                   <i className="fas fa-external-link-alt text-accent-modern me-2 flex-shrink-0"></i>
                   <div className="flex-grow-1 min-w-0">
-                    <span className="text-muted-modern me-2 d-block d-sm-inline">PokeBin Paste:</span>
+                    <span className="text-muted-modern me-2 d-block d-sm-inline">
+                      PokeBin Paste:
+                    </span>
                     <div className="paste-link-container">
                       <a
                         href={`https://pokebin.com/${pasteId}`}
@@ -210,7 +210,11 @@ IVs: 0 Atk
                   </div>
                 </div>
                 <button
-                  onClick={() => navigator.clipboard.writeText(`https://pokebin.com/${pasteId}`)}
+                  onClick={() =>
+                    navigator.clipboard.writeText(
+                      `https://pokebin.com/${pasteId}`
+                    )
+                  }
                   className="btn btn-secondary-modern btn-sm flex-shrink-0 ms-2"
                   title="Copy link"
                 >
@@ -223,13 +227,19 @@ IVs: 0 Atk
           {/* Team Stats */}
           <div className="mt-4 pt-3 border-top">
             <div className="row text-center">
-              <div className="col-4">
-                <div className="text-accent-modern fw-bold h4">{data?.team?.length || 0}</div>
+              <div className="col-6">
+                <div className="text-accent-modern fw-bold h4">
+                  {data?.team?.length || 0}
+                </div>
                 <div className="text-muted-modern small">Pokémon</div>
               </div>
-              <div className="col-4">
+              <div className="col-6">
                 <div className="fw-bold h4">
-                  {pasteId ? <span className="text-success">✓</span> : <span className="text-danger">✗</span>}
+                  {pasteId ? (
+                    <span className="text-success">✓</span>
+                  ) : (
+                    <span className="text-danger">✗</span>
+                  )}
                 </div>
                 <div className="text-muted-modern small">PokeBin</div>
               </div>

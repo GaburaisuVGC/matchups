@@ -250,8 +250,8 @@ const StoredViewer = () => {
               <i className="fas fa-users me-2"></i> Team Analysis
             </button>
           </div>
-          <div className="d-none d-lg-block">
-            <TeamPreview pokemonImages={pokemonImages} loadingImages={loadingImages} teamLength={data.team.length} />
+          <div className="d-none d-lg-block mb-2">
+            <TeamPreview pokemonImages={pokemonImages} loadingImages={loadingImages} teamLength={data.team.length} data={data}/>
           </div>
         </div>
         <div className="viewer-layout">
@@ -361,7 +361,7 @@ const StoredViewer = () => {
                 {data.team[selectedPokemon] && (
                   <>
                     <div className="d-flex align-items-center mb-3">
-                      {pokemonImages[selectedPokemon] ? (
+                      {pokemonImages[selectedPokemon] && data.paste ? (
                         <ImageLoader
                           src={pokemonImages[selectedPokemon]}
                           alt={data.team[selectedPokemon].species}
@@ -371,16 +371,12 @@ const StoredViewer = () => {
                             height: "60px",
                             objectFit: "contain",
                           }}
+                          showSkeleton={true}
                         />
                       ) : (
-                        <div className="me-3">
-                          <ImageLoader
-                            src=""
-                            alt=""
-                            style={{ width: "60px", height: "60px" }}
-                            showSkeleton={!loadingImages}
-                          />
-                        </div>
+                    <div className="me-3">
+                      <i className="fas fa-circle" style={{ fontSize: "60px", color: "#ccc" }}></i>
+                    </div>
                       )}
                       <div>
                         <h5 className="mb-1">
@@ -490,7 +486,7 @@ const StoredViewer = () => {
                         onClick={() => setSelectedPokemon(index)}
                       >
                         <div className="d-flex align-items-center">
-                          {pokemonImages[index] ? (
+                          {pokemonImages[index] && data.paste ? (
                             <ImageLoader
                               src={pokemonImages[index]}
                               alt={pokemon.species}
@@ -501,6 +497,7 @@ const StoredViewer = () => {
                                 objectFit: "contain",
                                 display: "inline-block"
                               }}
+                              showSkeleton={true}
                             />
                           ) : (
                             <i className="fas fa-circle me-2"></i>
@@ -520,7 +517,7 @@ const StoredViewer = () => {
       {/* Mobile Content */}
       <div className="d-block d-lg-none">
         <div className="mb-4">
-          <TeamPreview pokemonImages={pokemonImages} loadingImages={loadingImages} teamLength={data.team.length} />
+          <TeamPreview pokemonImages={pokemonImages} loadingImages={loadingImages} teamLength={data.team.length} data={data}/>
         </div>
         {/* Matchups Tab Content */}
         {activeTab === "matchups" && data.matchups.length > 0 && (
@@ -680,7 +677,7 @@ const StoredViewer = () => {
                         }
                       >
                         <div className="d-flex align-items-center">
-                          {pokemonImages[index] ? (
+                          {pokemonImages[index] && data.paste ? (
                             <ImageLoader
                               src={pokemonImages[index]}
                               alt={pokemon.species}
@@ -690,15 +687,11 @@ const StoredViewer = () => {
                                 height: "40px",
                                 objectFit: "contain"
                               }}
+                              showSkeleton={true}
                             />
                           ) : (
                             <div className="me-3">
-                              <ImageLoader
-                                src=""
-                                alt=""
-                                style={{ width: "40px", height: "40px" }}
-                                showSkeleton={!loadingImages}
-                              />
+                              <i className="fas fa-circle" style={{ fontSize: "40px", color: "#ccc" }}></i>
                             </div>
                           )}
                           <div>
